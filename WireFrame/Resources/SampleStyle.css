@@ -1,0 +1,18 @@
+/*
+    place extra stylesheet here
+*/
+
+.ImageContainer img {
+    border: solid 2px #158EC6;
+}
+
+#loading_container {
+	position: relative;
+}
+
+#loading {
+	position: absolute;
+	top: 100px;
+	left:110px;
+	border: none;
+}
