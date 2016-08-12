@@ -1,7 +1,7 @@
 # Megalobiz
 Android Mobile App of Megalobiz Website.
 
-Native android app of the website www.megalobiz.com , which is a Music Social Network allowing Users to follow Bands and Musicians and also to see theirs Albums and listen to their Songs.
+Native android app of the [Megalobiz](https://www.megalobiz.com) website , which is a Music Social Network allowing Users to follow Bands and Musicians and also to see theirs Albums and listen to their Songs.
 
 Here’s a complete list of User Stories on which we will be focused:
 ## A- Required User Stories
@@ -43,3 +43,11 @@ If we have enough time, we will implement the social aspect, which involves post
 * [ ] User can Amplify (same as Share) Song and Post
 * [ ] User can respect and comment a Post
 * [ ] User can receive notifications about comment and respect on his Post
+
+
+## WireFrame 
+
+Here's the WireFrame of implemented user stories:
+Please click to see [WireFrame](http://htmlpreview.github.io/?https://github.com/Megalobiz/Megalobiz/blob/master/WireFrame/index.html) 
+
+WireFrame created with [Pencil](http://pencil.evolus.vn).
