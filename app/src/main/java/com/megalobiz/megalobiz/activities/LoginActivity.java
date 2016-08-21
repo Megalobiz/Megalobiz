@@ -1,5 +1,6 @@
 package com.megalobiz.megalobiz.activities;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -29,6 +30,7 @@ public class LoginActivity extends AppCompatActivity {
 
     // go to register activity
     public void onRegister(View view) {
-
+        Intent i = new Intent(this, RegisterActivity.class);
+        startActivity(i);
     }
 }

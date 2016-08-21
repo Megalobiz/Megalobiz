@@ -4,4 +4,13 @@
     <string name="connect_to_megalobiz">CONNECT TO MEGALOBIZ</string>
     <string name="account_proposal_question">Don\'t have an account yet?</string>
     <string name="register_now">Register Now</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="gender">Gender</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="password_check">Password Check</string>
+    <string name="male">M</string>
+    <string name="female">F</string>
+    <string name="register">REGISTER</string>
 </resources>
