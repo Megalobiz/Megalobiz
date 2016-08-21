@@ -9,4 +9,95 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".activities.LoginActivity">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/rlHomeScreen">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/ivHomeScreen"
+            android:layout_alignParentBottom="false"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:src="@drawable/home_blue"
+            android:onClick="onHomeScreen" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/go_to_home_screen"
+            android:id="@+id/tvHomeScreen"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/ivHomeScreen"
+            android:layout_toEndOf="@+id/ivHomeScreen"
+            android:textSize="14sp"
+            android:layout_marginTop="10dp"
+            android:onClick="onHomeScreen" />
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="210dp"
+        android:layout_height="70dp"
+        android:id="@+id/ivConnect"
+        android:src="@drawable/mb_elipsis_connect"
+        android:onClick="loginToRest"
+        android:layout_alignBottom="@+id/ivLogo"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/connect_to_megalobiz"
+        android:id="@+id/tvConnect"
+        android:layout_centerHorizontal="true"
+        android:textColor="#FFF"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_alignTop="@+id/ivConnect"
+        android:layout_marginTop="25dp" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:id="@+id/ivLogo"
+        android:src="@drawable/mb_logo_big"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentTop="false"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/rlHomeScreen"
+        android:layout_marginTop="0dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/account_proposal_question"
+        android:id="@+id/tvRegisterProposal"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textColor="#158EC6"
+        android:textSize="16sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/register_now"
+        android:id="@+id/tvRegister"
+        android:textColor="#158EC6"
+        android:textSize="20sp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:textStyle="bold"
+        android:onClick="onRegister" />
+
 </RelativeLayout>

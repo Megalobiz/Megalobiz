@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Megalobiz</string>
+    <string name="go_to_home_screen">Go to Home Screen</string>
+    <string name="connect_to_megalobiz">CONNECT TO MEGALOBIZ</string>
+    <string name="account_proposal_question">Don\'t have an account yet?</string>
+    <string name="register_now">Register Now</string>
 </resources>
