@@ -1,23 +1,36 @@
 package com.megalobiz.megalobiz.activities;
 
 import android.content.Intent;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.ListViewCompat;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.megalobiz.megalobiz.MegalobizApplication;
 import com.megalobiz.megalobiz.MegalobizClient;
 import com.megalobiz.megalobiz.R;
+import com.megalobiz.megalobiz.activities.helpers.SharedHamburger;
 import com.megalobiz.megalobiz.activities.helpers.SharedMenu;
+import com.megalobiz.megalobiz.adapters.HamburgerArrayAdapter;
+import com.megalobiz.megalobiz.utils.HamburgerItem;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.zip.Inflater;
 
 public class TopShowbizActivity extends AppCompatActivity {
 
     MegalobizClient client;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,11 +38,15 @@ public class TopShowbizActivity extends AppCompatActivity {
 
         ActionBar ab = getSupportActionBar();
         ab.setDisplayShowHomeEnabled(true);
+        ab.setDisplayHomeAsUpEnabled(true);
         ab.setDisplayUseLogoEnabled(true);
         ab.setLogo(R.drawable.ic_megalobiz);
-        ab.setTitle("Megalo Hits");
+        ab.setTitle(R.string.drawer_home_close);
 
         client = MegalobizApplication.getRestClient();
+
+        // set the Hamburger menu with shared static class
+        SharedHamburger.cookHamburger(this);
 
         Toast.makeText(this,
                 "Connected to API with "+ MegalobizApplication.grantType, Toast.LENGTH_LONG).show();
@@ -38,6 +55,12 @@ public class TopShowbizActivity extends AppCompatActivity {
             Toast.makeText(this,
                     "Token is there :"+ client.checkAccessToken().getToken().subSequence(1, 5), Toast.LENGTH_LONG).show();
         }
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        SharedHamburger.drawerToggle.syncState();
     }
 
     @Override
@@ -55,6 +78,13 @@ public class TopShowbizActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         if (SharedMenu.setMenuActions(this, item))
             return true;
+
+        // Pass the event to ActionBarDrawerToggle
+        // If it returns true, then it has handled
+        // the nav drawer indicator touch event
+        if (SharedHamburger.drawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
