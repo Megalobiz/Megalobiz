@@ -13,4 +13,6 @@
     <string name="male">M</string>
     <string name="female">F</string>
     <string name="register">REGISTER</string>
+    <string name="login">Login</string>
+    <string name="logout">Logout</string>
 </resources>
