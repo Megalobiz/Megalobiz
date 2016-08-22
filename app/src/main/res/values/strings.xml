@@ -21,5 +21,6 @@
     <string name="drawer_open">Navigation</string>
     <string name="drawer_home_close"></string>
     <string name="guest">Guest</string>
+    <string name="megalobiz">Megalobiz</string>
 
 </resources>
