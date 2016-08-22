@@ -1,6 +1,7 @@
 package com.megalobiz.megalobiz.activities;
 
 import android.content.Intent;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -21,6 +22,12 @@ public class TopShowbizActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_top_showbiz);
 
+        ActionBar ab = getSupportActionBar();
+        ab.setDisplayShowHomeEnabled(true);
+        ab.setDisplayUseLogoEnabled(true);
+        ab.setLogo(R.drawable.ic_megalobiz);
+        ab.setTitle("Megalo Hits");
+
         client = MegalobizApplication.getRestClient();
 
         Toast.makeText(this,
@@ -28,7 +35,7 @@ public class TopShowbizActivity extends AppCompatActivity {
 
         if (client != null && client.checkAccessToken() != null) {
             Toast.makeText(this,
-                    "Token is there :"+ client.checkAccessToken(), Toast.LENGTH_LONG).show();
+                    "Token is there :"+ client.checkAccessToken().getToken().subSequence(1, 5), Toast.LENGTH_LONG).show();
         }
     }
 
