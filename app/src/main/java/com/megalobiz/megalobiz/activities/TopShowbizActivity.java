@@ -19,6 +19,7 @@ import com.megalobiz.megalobiz.MegalobizClient;
 import com.megalobiz.megalobiz.R;
 import com.megalobiz.megalobiz.activities.helpers.SharedHamburger;
 import com.megalobiz.megalobiz.activities.helpers.SharedMenu;
+import com.megalobiz.megalobiz.fragments.ShowbizMembersFragment;
 import com.megalobiz.megalobiz.fragments.TopBandsFragment;
 import com.megalobiz.megalobiz.models.Album;
 import com.megalobiz.megalobiz.models.Band;
@@ -169,6 +170,15 @@ public class TopShowbizActivity extends AppCompatActivity {
         ftBand.replace(R.id.flTopBands, fgBand);
         ftBand.commit();
 
+        // TOP 5 Musicians -----
+        // setup showbiz member Fragment
+        ArrayList<Showbiz> mShowbizs = new ArrayList<>();
+        mShowbizs.addAll(musicians);
+
+        ShowbizMembersFragment fgMusician = ShowbizMembersFragment.newInstance(mShowbizs, "Musician", true);
+        FragmentTransaction ftMusician = getSupportFragmentManager().beginTransaction();
+        ftMusician.replace(R.id.flTopMusicians, fgMusician);
+        ftMusician.commit();
     }
 
 
