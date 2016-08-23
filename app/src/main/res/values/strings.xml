@@ -19,7 +19,7 @@
     <string name="menu_title">Menu Title</string>
     <string name="menu">Menu</string>
     <string name="drawer_open">Navigation</string>
-    <string name="top_showbiz_title">Megalobiz Hit</string>
+    <string name="top_showbiz_title">Megalobiz Hits</string>
     <string name="guest">Guest</string>
     <string name="megalobiz">Megalobiz</string>
     <string name="bands_title">Bands List</string>
@@ -32,6 +32,12 @@
     <string name="album_title">Album Page</string>
     <string name="song_title">Song Page</string>
     <string name="showbiz_name">Showbiz Name</string>
+    <string name="_1">1</string>
+    <string name="_2">2</string>
+    <string name="_3">3</string>
+    <string name="_4">4</string>
+    <string name="_5">5</string>
+    <string name="band_name">Band Name</string>
 
 
 </resources>

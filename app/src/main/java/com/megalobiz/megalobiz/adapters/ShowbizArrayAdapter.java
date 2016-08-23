@@ -50,7 +50,8 @@ public class ShowbizArrayAdapter extends ArrayAdapter<Showbiz> {
         String profileUrl = showbiz.getSmallProfilePicture();
         if(!TextUtils.isEmpty(profileUrl)) {
             Picasso.with(getContext()).load(profileUrl)
-                    .transform(new RoundedCornersTransformation(3, 3))
+                    .resize(0, 100)
+                    .transform(new RoundedCornersTransformation(5, 5))
                     .into(ivProfilePicture);
         }
 
