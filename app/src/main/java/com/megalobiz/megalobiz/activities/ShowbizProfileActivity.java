@@ -48,7 +48,13 @@ public class ShowbizProfileActivity extends AppCompatActivity {
         ab.setDisplayHomeAsUpEnabled(true);
         ab.setDisplayUseLogoEnabled(true);
         ab.setLogo(R.drawable.ic_megalobiz);
-        ab.setTitle(resourceTitle);
+
+        // title
+        String title = showbiz.getName();
+        if(title.length() > 14) {
+            title = title.substring(0, 13);
+        }
+        ab.setTitle(title);
 
         client = MegalobizApplication.getRestClient();
 

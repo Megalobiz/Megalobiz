@@ -52,6 +52,32 @@ public class MegalobizClient extends OAuthBaseClient {
     // METHOD == ENDPOINT
 
 
+    // get Showbiz list (Band, Musician, Album, Song)
+    // ex: http://megalobiz.com/api/v1/band
+    // params amount = 24
+    // index = 0
+    public void getShowbizs(int index, String showbizType, AsyncHttpResponseHandler handler) {
+        // make the uri
+        String apiUrl = getApiUrl(showbizType.toLowerCase());
+
+        // Can specify query string params directly or through RequestParams.
+        RequestParams params = new RequestParams();
+        int amount = 24;
+        if(showbizType.equals("Musician"))
+            amount = 48;
+        else if (showbizType.equals("Album"))
+            amount = 40;
+        else if (showbizType.equals("Song"))
+            amount = 60;
+
+        params.put("amount", amount);
+        params.put("index", index);
+
+        client.get(apiUrl, params, handler);
+    }
+
+
+
 	/* 1. Define the endpoint URL with getApiUrl and pass a relative path to the endpoint
 	 * 	  i.e getApiUrl("statuses/home_timeline.json");
 	 * 2. Define the parameters to pass to the request (query or body)

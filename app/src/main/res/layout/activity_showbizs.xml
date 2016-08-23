@@ -3,24 +3,19 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/dlHamburger"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
 
     <!-- The 1st child inside DrawerLaouyt is for the main Activity UI-->
-    <ScrollView
+    <GridView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/scrollView"
+        android:layout_margin="8dp"
+        android:id="@+id/gvShowbiz"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="THIS IS THE SHOWBIZ LIST"
-            android:textSize="16sp"/>
-
-    </ScrollView>
+        android:layout_alignParentStart="true"
+        android:numColumns="4" />
 
     <!-- The 2nd child is for Side navigation drawer UI -->
     <include layout="@layout/side_menu" />
