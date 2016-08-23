@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/rlFlipper">
+
+        <ViewFlipper
+            android:id="@+id/view_flipper"
+            android:layout_width="match_parent"
+            android:layout_height="200dp">
+
+        </ViewFlipper>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="false"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentStart="false"
+        android:layout_below="@+id/rlFlipper"
+        android:layout_alignParentEnd="false"
+        android:layout_centerHorizontal="true">
+
+        <TextView
+            android:id="@+id/tvTop1"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:background="@drawable/circle_empty"
+            android:gravity="center"
+            android:text="@string/_1"
+            android:textColor="#158EC6"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tvTop2"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:background="@drawable/circle_empty"
+            android:gravity="center"
+            android:text="@string/_2"
+            android:textColor="#158EC6"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tvTop3"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:background="@drawable/circle_empty"
+            android:gravity="center"
+            android:text="@string/_3"
+            android:textColor="#158EC6"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tvTop4"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:background="@drawable/circle_empty"
+            android:gravity="center"
+            android:text="@string/_4"
+            android:textColor="#158EC6"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tvTop5"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:background="@drawable/circle_empty"
+            android:gravity="center"
+            android:text="@string/_5"
+            android:textColor="#158EC6"
+            android:textSize="14sp" />
+
+
+    </LinearLayout>
+
+</RelativeLayout>

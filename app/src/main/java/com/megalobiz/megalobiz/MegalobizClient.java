@@ -51,6 +51,12 @@ public class MegalobizClient extends OAuthBaseClient {
 
     // METHOD == ENDPOINT
 
+    // get Top Showbiz (5 Bands, 5 Musicians, 5 Albums, 10 Songs)
+    public void getTopShowbiz(AsyncHttpResponseHandler handler) {
+        String apiUrl = getApiUrl("home/megalohit");
+
+        client.get(apiUrl, handler);
+    }
 
     // get Showbiz list (Band, Musician, Album, Song)
     // ex: http://megalobiz.com/api/v1/band
