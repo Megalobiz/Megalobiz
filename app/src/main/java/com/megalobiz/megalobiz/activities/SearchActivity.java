@@ -1,19 +1,11 @@
 package com.megalobiz.megalobiz.activities;
 
-import android.content.Intent;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.ListViewCompat;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
+import android.widget.GridView;
 import android.widget.Toast;
 
 import com.megalobiz.megalobiz.MegalobizApplication;
@@ -21,47 +13,38 @@ import com.megalobiz.megalobiz.MegalobizClient;
 import com.megalobiz.megalobiz.R;
 import com.megalobiz.megalobiz.activities.helpers.SharedHamburger;
 import com.megalobiz.megalobiz.activities.helpers.SharedMenu;
-import com.megalobiz.megalobiz.adapters.HamburgerArrayAdapter;
-import com.megalobiz.megalobiz.models.Album;
-import com.megalobiz.megalobiz.models.Band;
-import com.megalobiz.megalobiz.models.Musician;
+import com.megalobiz.megalobiz.adapters.ShowbizArrayAdapter;
 import com.megalobiz.megalobiz.models.Showbiz;
-import com.megalobiz.megalobiz.models.Song;
-import com.megalobiz.megalobiz.utils.HamburgerItem;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.zip.Inflater;
 
-public class TopShowbizActivity extends AppCompatActivity {
+public class SearchActivity extends AppCompatActivity {
 
     private MegalobizClient client;
+    private ShowbizArrayAdapter aShowbiz;
+    private ArrayList<Showbiz> showbizs;
+    private GridView gvShowbiz;
+
     private Boolean firstRun = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_top_showbiz);
+        setContentView(R.layout.activity_search);
 
         ActionBar ab = getSupportActionBar();
         ab.setDisplayShowHomeEnabled(true);
         ab.setDisplayHomeAsUpEnabled(true);
         ab.setDisplayUseLogoEnabled(true);
         ab.setLogo(R.drawable.ic_megalobiz);
-        ab.setTitle(R.string.top_showbiz_title);
+        ab.setTitle(R.string.search);
 
         client = MegalobizApplication.getRestClient();
 
         // set the Hamburger menu with shared static class
-        SharedHamburger.cookHamburger(this, R.string.top_showbiz_title);
+        SharedHamburger.cookHamburger(this, R.string.search);
 
-        Toast.makeText(this,
-                "Connected to API with "+ MegalobizApplication.grantType, Toast.LENGTH_LONG).show();
-
-        if (client != null && client.checkAccessToken() != null) {
-            Toast.makeText(this,
-                    "Token is there :"+ client.checkAccessToken().getToken().subSequence(1, 5), Toast.LENGTH_LONG).show();
-        }
+        Toast.makeText(this, "Search keywords will show Showbiz items", Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -74,7 +57,7 @@ public class TopShowbizActivity extends AppCompatActivity {
     protected void onPostResume() {
         super.onPostResume();
         if (! firstRun) {
-            SharedHamburger.reCookHamburger(this, R.string.top_showbiz_title);
+            SharedHamburger.reCookHamburger(this, R.string.search);
         } else {
             firstRun = false;
         }
@@ -106,25 +89,4 @@ public class TopShowbizActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void onBandProfile(View view) {
-        launchShowbizProfile(new Band());
-    }
-
-    public void onMusicianProfile(View view) {
-        launchShowbizProfile(new Musician());
-    }
-
-    public void onAlbumProfile(View view) {
-        launchShowbizProfile(new Album());
-    }
-
-    public void onSongProfile(View view) {
-        launchShowbizProfile(new Song());
-    }
-
-    public void launchShowbizProfile(Showbiz showbiz) {
-        Intent i = new Intent(this, ShowbizProfileActivity.class);
-        i.putExtra("showbiz", showbiz);
-        startActivity(i);
-    }
 }

@@ -27,9 +27,12 @@ public class Song extends Showbiz {
         return String.format("%s%s", MegalobizApi.HOST, fullPath);
     }
 
+    public Song() {
+        showbizType = "Song";
+    }
+
     public static Song fromJSON(JSONObject json) {
         Song song = new Song();
-        song.showbizType = "Song";
 
         try {
             song.id = json.getInt("song_id");

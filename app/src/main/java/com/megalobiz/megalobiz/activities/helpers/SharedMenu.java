@@ -1,5 +1,6 @@
 package com.megalobiz.megalobiz.activities.helpers;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.Menu;
@@ -10,6 +11,7 @@ import com.megalobiz.megalobiz.MegalobizApplication;
 import com.megalobiz.megalobiz.MegalobizClient;
 import com.megalobiz.megalobiz.R;
 import com.megalobiz.megalobiz.activities.LoginActivity;
+import com.megalobiz.megalobiz.activities.SearchActivity;
 
 /**
  * Created by KeitelRobespierre on 8/17/2016.
@@ -64,6 +66,11 @@ public class SharedMenu {
 
     public static void searchAll() {
         // code to launch Search Activity here
+        Activity activity = (Activity) menuContext;
+        if (! (activity instanceof SearchActivity)) {
+            Intent i = new Intent(menuContext, SearchActivity.class);
+            menuContext.startActivity(i);
+        }
     }
 
     // clear access token either from AUTHORIZATION or CLIENT_CREDENTIALS grant type

@@ -2,14 +2,19 @@ package com.megalobiz.megalobiz.activities.helpers;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.megalobiz.megalobiz.R;
+import com.megalobiz.megalobiz.activities.AboutActivity;
+import com.megalobiz.megalobiz.activities.ShowbizsActivity;
+import com.megalobiz.megalobiz.activities.TopShowbizActivity;
 import com.megalobiz.megalobiz.adapters.HamburgerArrayAdapter;
 import com.megalobiz.megalobiz.utils.HamburgerItem;
 
@@ -22,13 +27,14 @@ public class SharedHamburger {
 
     public static Context hamContext;
     public static HamburgerArrayAdapter hamAdapter;
-    public static  ArrayList<HamburgerItem> hamItems;
+    public static ArrayList<HamburgerItem> hamItems;
     public static ListView lvHamburger;
     public static DrawerLayout dlHamburger;
+    public static LinearLayout llHamburger;
     public static ActionBarDrawerToggle drawerToggle;
     private static Activity activity;
 
-    public static void cookHamburger(Context context) {
+    public static void cookHamburger(Context context, int resourceTitle) {
         hamContext = context;
         activity = (Activity) hamContext;
 
@@ -43,8 +49,8 @@ public class SharedHamburger {
         // DrawerLayout
         dlHamburger = (DrawerLayout) activity.findViewById(R.id.dlHamburger);
 
-        // Populate the Navigtion Drawer with options
-        //mDrawerPane = (RelativeLayout) findViewById(R.id.drawerPane);
+        // Populate the Navigation Drawer with options
+        llHamburger = (LinearLayout) activity.findViewById(R.id.rlHamburger);
         lvHamburger = (ListView) activity.findViewById(R.id.lvHamburger);
         hamAdapter = new HamburgerArrayAdapter(hamContext, hamItems);
         lvHamburger.setAdapter(hamAdapter);
@@ -57,7 +63,7 @@ public class SharedHamburger {
             }
         });
 
-        drawerToggle = new ActionBarDrawerToggle(activity, dlHamburger, R.string.drawer_open, R.string.drawer_home_close) {
+        drawerToggle = new ActionBarDrawerToggle(activity, dlHamburger, R.string.drawer_open, resourceTitle) {
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
@@ -76,20 +82,85 @@ public class SharedHamburger {
         dlHamburger.setDrawerListener(drawerToggle);
     }
 
+    public static void reCookHamburger(Context context, int resourceTitle) {
+        cookHamburger(context, resourceTitle);
+        SharedHamburger.dlHamburger.closeDrawer(SharedHamburger.llHamburger);
+        SharedHamburger.drawerToggle.syncState();
+    }
+
     public static void goToActivity(int position) {
         if (position == 0) {
-            Toast.makeText(hamContext, "Top Showbiz Activity", Toast.LENGTH_SHORT).show();
+            // Megalo Hits
+            topShowizs();
+
         } else if (position == 1) {
-            Toast.makeText(hamContext, "Band Showbizs Activity", Toast.LENGTH_SHORT).show();
+            // bands
+            listBands();
+
         } else if (position == 2) {
-            Toast.makeText(hamContext, "Musician Showbizs Activity", Toast.LENGTH_SHORT).show();
+            // musicians
+            listMusicians();
+
         } else if (position == 3) {
-            Toast.makeText(hamContext, "Album Showbizs Activity", Toast.LENGTH_SHORT).show();
+            // albums
+            listAlbums();
+
         } else if (position == 4) {
-            Toast.makeText(hamContext, "Song Showbizs Activity", Toast.LENGTH_SHORT).show();
+            // songs
+            listSongs();
         } else if (position == 5) {
-            Toast.makeText(hamContext, "About Showbizs Activity", Toast.LENGTH_SHORT).show();
+            // about
+            showAbout();
         }
     }
 
+    public static void topShowizs() {
+        if (! (activity instanceof TopShowbizActivity)) {
+            Intent i = new Intent(hamContext, TopShowbizActivity.class);
+            hamContext.startActivity(i);
+        }
+    }
+
+    public static void listBands() {
+        finishActivity();
+
+        Intent i = new Intent(hamContext, ShowbizsActivity.class);
+        i.putExtra("showbiz_type", "Band");
+        hamContext.startActivity(i);
+    }
+
+    public static void listMusicians() {
+        finishActivity();
+
+        Intent i = new Intent(hamContext, ShowbizsActivity.class);
+        i.putExtra("showbiz_type", "Musician");
+        hamContext.startActivity(i);
+    }
+
+    public static void listAlbums() {
+        finishActivity();
+
+        Intent i = new Intent(hamContext, ShowbizsActivity.class);
+        i.putExtra("showbiz_type", "Album");
+        hamContext.startActivity(i);
+    }
+
+    public static void listSongs() {
+        finishActivity();
+
+        Intent i = new Intent(hamContext, ShowbizsActivity.class);
+        i.putExtra("showbiz_type", "Song");
+        hamContext.startActivity(i);
+    }
+
+    public static void finishActivity() {
+        if (activity instanceof ShowbizsActivity) {
+            activity.finish();
+        }
+    }
+
+    public static void showAbout() {
+        Intent i = new Intent(hamContext, AboutActivity.class);
+        hamContext.startActivity(i);
+    }
 }

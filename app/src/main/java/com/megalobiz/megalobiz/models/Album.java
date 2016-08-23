@@ -19,9 +19,12 @@ public class Album extends Showbiz {
     private Showbiz owner;
     private ArrayList<Song> songs;
 
+    public Album() {
+        showbizType = "Album";
+    }
+
     public static Album fromJSON(JSONObject json) {
         Album album = new Album();
-        album.showbizType = "Album";
 
         try {
             album.id = json.getInt("album_id");
