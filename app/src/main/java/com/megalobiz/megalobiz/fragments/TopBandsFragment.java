@@ -1,5 +1,6 @@
 package com.megalobiz.megalobiz.fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import android.widget.ViewFlipper;
 import com.megalobiz.megalobiz.MegalobizApplication;
 import com.megalobiz.megalobiz.MegalobizClient;
 import com.megalobiz.megalobiz.R;
+import com.megalobiz.megalobiz.activities.TopShowbizActivity;
 import com.megalobiz.megalobiz.adapters.ShowbizArrayAdapter;
 import com.megalobiz.megalobiz.models.Band;
 import com.megalobiz.megalobiz.models.Showbiz;
@@ -118,6 +120,16 @@ public class TopBandsFragment extends Fragment {
         mViewFlipper.setInAnimation(AnimationUtils.loadAnimation(mContext, android.R.anim.fade_in));
         mViewFlipper.getInAnimation().setAnimationListener(mAnimationListener);
 
+        // set onOnclik listener to go to Band Profile
+        mViewFlipper.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                int position = mViewFlipper.indexOfChild(mViewFlipper.getCurrentView());
+                TopShowbizActivity activity = (TopShowbizActivity) getActivity();
+                activity.launchShowbizProfile(bands.get(position));
+            }
+        });
+
     }
 
     public View createTopBandView(Band band) {
@@ -190,8 +202,8 @@ public class TopBandsFragment extends Fragment {
                     mViewFlipper.showNext();
                     // move circle
                     moveCirclePosition();
-
                     return true;
+
                 } else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
                     mViewFlipper.setInAnimation(AnimationUtils.loadAnimation(mContext, android.R.anim.fade_in));
                     mViewFlipper.setOutAnimation(AnimationUtils.loadAnimation(mContext, android.R.anim.fade_out));
