@@ -15,9 +15,12 @@ public class Band extends Showbiz {
     private ArrayList<Album> albums;
     private ArrayList<Song> songs;
 
+    public Band() {
+        showbizType = "Band";
+    }
+
     public static Band fromJSON(JSONObject json) {
         Band band = new Band();
-        band.showbizType = "Band";
 
         try {
             band.id = json.getInt("band_id");

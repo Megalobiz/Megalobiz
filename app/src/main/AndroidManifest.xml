@@ -31,8 +31,11 @@
         </activity>
         <activity
             android:name=".activities.RegisterActivity"
-            android:label="Register" />
-        <activity android:name=".activities.TopShowbizActivity" />
+            android:label="Register"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activities.TopShowbizActivity"
+            android:launchMode="singleTask" />
         <activity android:name=".activities.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -40,6 +43,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activities.ShowbizsActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activities.ShowbizProfileActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activities.SearchActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activities.AboutActivity"
+            android:launchMode="singleTask" />
     </application>
 
 </manifest>

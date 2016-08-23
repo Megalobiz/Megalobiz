@@ -17,9 +17,12 @@ public class Musician extends Showbiz {
     private ArrayList<Song> songs;
     private ArrayList<Song> featuringSongs;
 
+    public Musician() {
+        showbizType = "Musician";
+    }
+
     public static Musician fromJSON(JSONObject json) {
         Musician musician = new Musician();
-        musician.showbizType = "Musician";
 
         try {
             musician.id = json.getInt("musician_id");

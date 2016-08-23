@@ -1,25 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/dlHamburger"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <!-- The 1st child inside DrawerLaouyt is for the main Activity UI-->
-    <ScrollView
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/scrollView"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" >
 
-        <include layout="@layout/megalo_hits" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="THIS IS THE SEARCH PLACE"
+            android:textSize="16sp"/>
 
-    </ScrollView>
+    </RelativeLayout>
 
     <!-- The 2nd child is for Side navigation drawer UI -->
     <include layout="@layout/side_menu" />
+
 
 </android.support.v4.widget.DrawerLayout>
