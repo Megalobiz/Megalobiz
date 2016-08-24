@@ -23,6 +23,34 @@ public class Song extends Showbiz {
     private Showbiz owner;
     private ArrayList<Musician> featuringMusicians;
 
+    public ArrayList<Musician> getFeaturingMusicians() {
+        return featuringMusicians;
+    }
+
+    public int getLength() {
+        return length;
+    }
+
+    public Showbiz getOwner() {
+        return owner;
+    }
+
+    public int getRateCount() {
+        return rateCount;
+    }
+
+    public int getTotalNote() {
+        return totalNote;
+    }
+
+    public int getTrack() {
+        return track;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
     public String getFullPath() {
         return String.format("%s%s", MegalobizApi.HOST, fullPath);
     }

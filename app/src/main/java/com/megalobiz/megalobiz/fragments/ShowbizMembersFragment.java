@@ -253,8 +253,11 @@ public class ShowbizMembersFragment extends Fragment {
         tvMusicianPosition.setText(String.valueOf(position));
 
         String owner = "Unknown Artist";
-        if(!TextUtils.isEmpty(album.getOwner().getName()));
-        tvOwner.setText(album.getOwner().getName());
+        if(album.getOwner() != null) {
+            owner = album.getOwner().getName();
+        }
+
+        tvOwner.setText(owner);
 
         // load image
         String imageUrl = showbiz.getSmallProfilePicture();
