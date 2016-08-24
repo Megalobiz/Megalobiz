@@ -40,6 +40,7 @@
     <string name="band_name">Band Name</string>
     <string name="top_musicians">Top Musicians</string>
     <string name="_0">0</string>
+    <string name="owner">Owner</string>
 
 
 </resources>

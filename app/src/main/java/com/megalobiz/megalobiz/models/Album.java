@@ -19,6 +19,27 @@ public class Album extends Showbiz {
     private Showbiz owner;
     private ArrayList<Song> songs;
 
+
+    public Showbiz getOwner() {
+        return owner;
+    }
+
+    public float getRating() {
+        return rating;
+    }
+
+    public SimpleDateFormat getReleaseDate() {
+        return releaseDate;
+    }
+
+    public ArrayList<Song> getSongs() {
+        return songs;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
     public Album() {
         showbizType = "Album";
     }

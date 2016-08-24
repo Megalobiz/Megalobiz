@@ -179,6 +179,16 @@ public class TopShowbizActivity extends AppCompatActivity {
         FragmentTransaction ftMusician = getSupportFragmentManager().beginTransaction();
         ftMusician.replace(R.id.flTopMusicians, fgMusician);
         ftMusician.commit();
+
+        // TOP 5 Albums -----
+        // setup showbiz member Fragment
+        ArrayList<Showbiz> aShowbizs = new ArrayList<>();
+        aShowbizs.addAll(albums);
+
+        ShowbizMembersFragment fgAlbum = ShowbizMembersFragment.newInstance(aShowbizs, "Album", true);
+        FragmentTransaction ftAlbum = getSupportFragmentManager().beginTransaction();
+        ftAlbum.replace(R.id.flTopAlbums, fgAlbum);
+        ftAlbum.commit();
     }
 
 

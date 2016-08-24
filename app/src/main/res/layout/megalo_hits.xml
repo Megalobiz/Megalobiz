@@ -19,5 +19,14 @@
         android:minHeight="50dp"
         android:layout_marginTop="30dp" />
 
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/flTopMusicians"
+        android:id="@+id/flTopAlbums"
+        android:background="#FFF"
+        android:minHeight="50dp"
+        android:layout_marginTop="30dp" />
+
 
 </RelativeLayout>
