@@ -20,6 +20,7 @@ import com.megalobiz.megalobiz.R;
 import com.megalobiz.megalobiz.activities.helpers.SharedHamburger;
 import com.megalobiz.megalobiz.activities.helpers.SharedMenu;
 import com.megalobiz.megalobiz.fragments.ShowbizMembersFragment;
+import com.megalobiz.megalobiz.fragments.SongsFragment;
 import com.megalobiz.megalobiz.fragments.TopBandsFragment;
 import com.megalobiz.megalobiz.models.Album;
 import com.megalobiz.megalobiz.models.Band;
@@ -189,24 +190,15 @@ public class TopShowbizActivity extends AppCompatActivity {
         FragmentTransaction ftAlbum = getSupportFragmentManager().beginTransaction();
         ftAlbum.replace(R.id.flTopAlbums, fgAlbum);
         ftAlbum.commit();
+
+        // TOP 5 Songs ------
+        // setup songs Fragment
+        SongsFragment fgSong = SongsFragment.newInstance(songs, true);
+        FragmentTransaction ftSong = getSupportFragmentManager().beginTransaction();
+        ftSong.replace(R.id.flTopSongs, fgSong);
+        ftSong.commit();
     }
 
-
-    public void onBandProfile(View view) {
-        launchShowbizProfile(new Band());
-    }
-
-    public void onMusicianProfile(View view) {
-        launchShowbizProfile(new Musician());
-    }
-
-    public void onAlbumProfile(View view) {
-        launchShowbizProfile(new Album());
-    }
-
-    public void onSongProfile(View view) {
-        launchShowbizProfile(new Song());
-    }
 
     public void launchShowbizProfile(Showbiz showbiz) {
         Intent i = new Intent(this, ShowbizProfileActivity.class);

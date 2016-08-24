@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/relativeLayout2"
+        android:layout_margin="2dp">
+
+        <ImageView
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:id="@+id/ivProfilePicture"
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginRight="25dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="3dp"
+            android:src="@drawable/mb_icon_song_black" />
+
+        <TextView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:text="@string/_0"
+            android:id="@+id/tvPosition"
+            android:layout_alignParentRight="false"
+            android:layout_alignParentEnd="false"
+            android:layout_alignTop="@+id/ivProfilePicture"
+            android:gravity="center"
+            android:layout_alignRight="@+id/ivProfilePicture"
+            android:background="@drawable/circle_filled"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            android:layout_marginTop="-8dp"
+            android:layout_marginRight="-10dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/showbiz_name"
+            android:id="@+id/tvName"
+            android:maxLength="25"
+            android:maxLines="2"
+            android:textColor="#222222"
+            android:textSize="14sp"
+            android:layout_alignParentTop="true"
+            android:layout_alignTop="@+id/ivProfilePicture"
+            android:layout_toRightOf="@+id/ivProfilePicture"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/owner"
+            android:id="@+id/tvOwner"
+            android:maxLength="25"
+            android:maxLines="2"
+            android:textColor="#555555"
+            android:textSize="13sp"
+            android:layout_alignParentBottom="false"
+            android:layout_alignStart="@+id/tvName"
+            android:layout_alignLeft="@+id/tvName"
+            android:layout_below="@+id/tvName" />
+
+    </RelativeLayout>
+
+</RelativeLayout>
