@@ -82,6 +82,16 @@ public class MegalobizClient extends OAuthBaseClient {
         client.get(apiUrl, params, handler);
     }
 
+    // get Showbiz Profile (Band, Musician, Album, Song)
+    // ex: http://megalobiz.com/api/v1/band/1000
+    public void getShowbiz(int id, String showbizType, AsyncHttpResponseHandler handler) {
+        // make the uri
+        String apiUrl = getApiUrl(String.format("%s/%d", showbizType.toLowerCase(), id));
+
+
+        client.get(apiUrl, handler);
+    }
+
 
 
 	/* 1. Define the endpoint URL with getApiUrl and pass a relative path to the endpoint

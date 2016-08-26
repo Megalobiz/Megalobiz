@@ -8,6 +8,8 @@ import android.os.Handler;
 import android.widget.Toast;
 
 
+import com.megalobiz.megalobiz.MegalobizApi;
+
 import java.io.IOException;
 
 /**
@@ -24,6 +26,10 @@ public class NetworkState {
     }
 
     public Boolean isNetworkAvailable() {
+        // for local dev
+        if(!MegalobizApi.HOST.contains("megalobiz"))
+            return true;
+
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
@@ -31,6 +37,10 @@ public class NetworkState {
     }
 
     public static boolean isOnline() {
+        // for local dev
+        if(!MegalobizApi.HOST.contains("megalobiz"))
+            return true;
+
         Runtime runtime = Runtime.getRuntime();
         try {
             Process ipProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8");

@@ -15,7 +15,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" >
 
-        <include layout="@layout/showbiz_profile" />
+        <include layout="@layout/showbiz_media_profile" />
 
     </ScrollView>
 

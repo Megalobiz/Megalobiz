@@ -193,7 +193,7 @@ public class ShowbizsActivity extends AppCompatActivity {
 
     private void displayShowbiz(Showbiz showbiz) {
         // create intent to display article
-        Intent i = new Intent(getApplicationContext(), ShowbizProfileActivity.class);
+        Intent i = new Intent(this, ShowbizProfileActivity.class);
         // pass the article into intent
         i.putExtra("showbiz", showbiz);
         startActivity(i);

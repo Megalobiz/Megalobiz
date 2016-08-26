@@ -58,7 +58,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/owner"
-            android:id="@+id/tvOwner"
+            android:id="@+id/tvAlbumsCount"
             android:maxLength="25"
             android:maxLines="2"
             android:textColor="#555555"

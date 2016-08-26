@@ -1,22 +1,19 @@
 package com.megalobiz.megalobiz.fragments;
 
-import android.graphics.Color;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import com.megalobiz.megalobiz.MegalobizApplication;
-import com.megalobiz.megalobiz.MegalobizClient;
 import com.megalobiz.megalobiz.R;
+import com.megalobiz.megalobiz.activities.ShowbizProfileActivity;
 import com.megalobiz.megalobiz.models.Album;
 import com.megalobiz.megalobiz.models.Showbiz;
 import com.squareup.picasso.Picasso;
@@ -34,6 +31,8 @@ public class ShowbizMembersFragment extends Fragment {
     private ArrayList<Showbiz> showbizs;
     private boolean forTop;
     private TableLayout table;
+    private String title;
+    private TextView tvMembersTitle;
 
     // inflation logic
     @Override
@@ -50,6 +49,12 @@ public class ShowbizMembersFragment extends Fragment {
         }
 
         v = inflater.inflate(res, container, false);
+
+        // set Title if normal showbiz members is used
+        if(res == R.layout.fragment_showbiz_members) {
+            tvMembersTitle = (TextView) v.findViewById(R.id.tvMembersTitle);
+            tvMembersTitle.setText(showbizType + "s");
+        }
 
         table = (TableLayout) v.findViewById(R.id.tlShowbizs);
 
@@ -92,7 +97,15 @@ public class ShowbizMembersFragment extends Fragment {
         return fg;
     }
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     public void populateShowbizsTable() {
+        if (title != null) {
+            tvMembersTitle.setText(title);
+        }
+
         int modulus = showbizs.size()%4;
         int rowsCount = 1;
 
@@ -195,7 +208,7 @@ public class ShowbizMembersFragment extends Fragment {
 
     }
 
-    public View createShowbizView(Showbiz showbiz) {
+    public View createShowbizView(final Showbiz showbiz) {
         LayoutInflater inflater = LayoutInflater.from(getContext());
         View v = inflater.inflate(R.layout.showbiz_item, null);
         TextView tvName = (TextView) v.findViewById(R.id.tvName);
@@ -211,10 +224,18 @@ public class ShowbizMembersFragment extends Fragment {
                 .transform(new RoundedCornersTransformation(5, 5))
                 .into(imageView);
 
+        // create on click listener
+        imageView.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                launchShowbizProfile(showbiz);
+            }
+        });
+
         return v;
     }
 
-    public View createTopMusicianView(Showbiz showbiz, int position) {
+    public View createTopMusicianView(final Showbiz showbiz, int position) {
         LayoutInflater inflater = LayoutInflater.from(getContext());
         View v = inflater.inflate(R.layout.top_musician, null);
         TextView tvName = (TextView) v.findViewById(R.id.tvName);
@@ -233,18 +254,26 @@ public class ShowbizMembersFragment extends Fragment {
                 .transform(new RoundedCornersTransformation(5, 5))
                 .into(imageView);
 
+        // create on click listener
+        v.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                launchShowbizProfile(showbiz);
+            }
+        });
+
         return v;
     }
 
-    public View createTopAlbumView(Showbiz showbiz, int position) {
+    public View createTopAlbumView(final Showbiz showbiz, int position) {
         // showbiz is an album
-        Album album = (Album) showbiz;
+        final Album album = (Album) showbiz;
 
         LayoutInflater inflater = LayoutInflater.from(getContext());
         View v = inflater.inflate(R.layout.top_album, null);
         TextView tvName = (TextView) v.findViewById(R.id.tvName);
         TextView tvMusicianPosition = (TextView) v.findViewById(R.id.tvPosition);
-        TextView tvOwner = (TextView) v.findViewById(R.id.tvOwner);
+        TextView tvOwner = (TextView) v.findViewById(R.id.tvAlbumsCount);
 
         ImageView imageView = (ImageView) v.findViewById(R.id.ivProfilePicture);
         imageView.setBackgroundResource(0);
@@ -266,8 +295,30 @@ public class ShowbizMembersFragment extends Fragment {
                 .transform(new RoundedCornersTransformation(5, 5))
                 .into(imageView);
 
+        // create album on click listener
+        imageView.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                launchShowbizProfile(showbiz);
+            }
+        });
+
+        // create on click listener
+        tvOwner.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                launchShowbizProfile(album.getOwner());
+            }
+        });
+
         return v;
     }
 
+
+    public void launchShowbizProfile(Showbiz showbiz) {
+        Intent i = new Intent(getActivity(), ShowbizProfileActivity.class);
+        i.putExtra("showbiz", showbiz);
+        startActivity(i);
+    }
 
 }

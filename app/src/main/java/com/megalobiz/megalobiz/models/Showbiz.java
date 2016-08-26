@@ -18,6 +18,7 @@ public class Showbiz implements Serializable{
     protected String wallBasepath;
     protected String wallFilename;
     protected int respects;
+    protected String genreName;
 
     public String getShowbizType() {
         return showbizType;
@@ -71,5 +72,9 @@ public class Showbiz implements Serializable{
 
     public int getRespects() {
         return respects;
+    }
+
+    public String getGenreName() {
+        return genreName;
     }
 }

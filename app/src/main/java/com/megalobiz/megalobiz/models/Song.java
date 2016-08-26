@@ -66,7 +66,11 @@ public class Song extends Showbiz {
             song.id = json.getInt("song_id");
             song.name = json.getString("song_name");
             song.year = json.getInt("theyear");
+            song.track = json.getInt("track");
+            song.length = json.getInt("length");
             song.totalNote = json.getInt("total_note");
+            song.rateCount = json.getInt("rate_count");
+            song.respects = json.getInt("respects");
 
             song.fullPath = json.getString("full_path");
 
@@ -75,6 +79,12 @@ public class Song extends Showbiz {
             song.profileBasepath = json.getJSONObject("pictures").getJSONObject("profile").getString("base_path");
             // get profile path
             song.profileFilename = json.getJSONObject("pictures").getJSONObject("profile").getString("path");
+
+            // Genre Name
+            // Genre Name
+            if(json.has("music_genre")) {
+                song.genreName = json.getJSONObject("music_genre").getString("genre_name");
+            }
 
             // Owner of Song (Album, Band or Musician)
             // if owner is a Band
@@ -96,7 +106,11 @@ public class Song extends Showbiz {
 
             // Collection Models
             // Featuring Musicians
-
+            if(json.has("featuring_musicians")) {
+                if(json.getJSONArray("featuring_musicians") != null) {
+                    song.featuringMusicians = Musician.fromJSONArray(json.getJSONArray("featuring_musicians"));
+                }
+            }
 
         } catch (JSONException e) {
             e.printStackTrace();

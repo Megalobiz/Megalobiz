@@ -1,6 +1,5 @@
 package com.megalobiz.megalobiz.fragments;
 
-import android.app.Activity;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -16,11 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.megalobiz.megalobiz.R;
-import com.megalobiz.megalobiz.activities.TopShowbizActivity;
+import com.megalobiz.megalobiz.activities.helpers.SharedMenu;
 import com.megalobiz.megalobiz.models.Song;
-import com.squareup.picasso.Picasso;
-
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,17 +30,20 @@ public class SongsFragment extends Fragment {
     private ArrayList<Song> songs;
     private TableLayout table;
     private boolean forTop;
+    private String title;
+    private TextView tvTitle;
     private Song loadedSong;
     private TextView tvCurrentSong;
 
     // inflation logic
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
         View v = inflater.inflate(R.layout.fragment_top_songs, container, false);
         //parentView = v;
         table = (TableLayout) v.findViewById(R.id.tlSongs);
         tvCurrentSong = (TextView) v.findViewById(R.id.tvCurrentSong);
-
+        tvTitle = (TextView) v.findViewById(R.id.tvTopSongs);
         return v;
     }
 
@@ -56,6 +55,7 @@ public class SongsFragment extends Fragment {
 
         songs = (ArrayList<Song>) getArguments().getSerializable("songs");
         forTop = getArguments().getBoolean("forTop");
+        title = getArguments().getString("title");
         //mediaPlayer = new MediaPlayer();
         //mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
     }
@@ -70,17 +70,20 @@ public class SongsFragment extends Fragment {
         loadSong(songs.get(0));
     }
 
-    public static SongsFragment newInstance(ArrayList<Song> songs, boolean forTop) {
+    public static SongsFragment newInstance(ArrayList<Song> songs, boolean forTop, String title) {
         SongsFragment fg = new SongsFragment();
         Bundle args = new Bundle();
         args.putSerializable("songs", songs);
         args.putBoolean("forTop", forTop);
+        args.putString("title", title);
         fg.setArguments(args);
 
         return fg;
     }
 
     public void populateSongsTable() {
+        //Set title
+        tvTitle.setText(title);
 
         // Rows - count songs
         for (int i = 0; i < songs.size(); i++) {
@@ -108,7 +111,7 @@ public class SongsFragment extends Fragment {
         View v = inflater.inflate(R.layout.top_song, null);
         TextView tvName = (TextView) v.findViewById(R.id.tvName);
         TextView tvMusicianPosition = (TextView) v.findViewById(R.id.tvPosition);
-        TextView tvOwner = (TextView) v.findViewById(R.id.tvOwner);
+        TextView tvOwner = (TextView) v.findViewById(R.id.tvAlbumsCount);
 
         ImageView imageView = (ImageView) v.findViewById(R.id.ivProfilePicture);
         //imageView.setBackgroundResource(0);
@@ -134,8 +137,7 @@ public class SongsFragment extends Fragment {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                TopShowbizActivity activity = (TopShowbizActivity) getActivity();
-                activity.launchShowbizProfile(song);
+                SharedMenu.launchShowbizProfile(getContext(), song);
             }
         });
 
