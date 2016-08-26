@@ -121,18 +121,18 @@ public class TopBandsFragment extends Fragment {
         mViewFlipper.getInAnimation().setAnimationListener(mAnimationListener);
 
         // set onOnclik listener to go to Band Profile
-        mViewFlipper.setOnClickListener(new View.OnClickListener(){
+        /*mViewFlipper.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
                 int position = mViewFlipper.indexOfChild(mViewFlipper.getCurrentView());
                 TopShowbizActivity activity = (TopShowbizActivity) getActivity();
                 activity.launchShowbizProfile(bands.get(position));
             }
-        });
+        });*/
 
     }
 
-    public View createTopBandView(Band band) {
+    public View createTopBandView(final Band band) {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         View v = inflater.inflate(R.layout.top_band, null);
         TextView tvTopBandName = (TextView) v.findViewById(R.id.tvTopBandName);
@@ -144,6 +144,15 @@ public class TopBandsFragment extends Fragment {
         // load image
         String imageUrl = band.getBigProfilePicture();
         Picasso.with(mContext).load(imageUrl).into(imageView);
+
+        // onclick
+        tvTopBandName.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                TopShowbizActivity activity = (TopShowbizActivity) getActivity();
+                activity.launchShowbizProfile(band);
+            }
+        });
 
         return v;
     }
