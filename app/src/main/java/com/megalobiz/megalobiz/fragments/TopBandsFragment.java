@@ -142,7 +142,7 @@ public class TopBandsFragment extends Fragment {
         tvTopBandName.setText(String.format("Band: %s", band.getName()));
 
         // load image
-        String imageUrl = band.getBigProfilePicture();
+        String imageUrl = band.getBigWallPicture();
         Picasso.with(mContext).load(imageUrl).into(imageView);
 
         // onclick
