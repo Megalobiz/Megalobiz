@@ -18,6 +18,8 @@ import com.megalobiz.megalobiz.R;
 import com.megalobiz.megalobiz.activities.helpers.SharedMenu;
 import com.megalobiz.megalobiz.models.Song;
 
+import org.w3c.dom.Text;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -34,6 +36,11 @@ public class SongsFragment extends Fragment {
     private TextView tvTitle;
     private Song loadedSong;
     private TextView tvCurrentSong;
+    private ImageView play;
+    private ImageView stop;
+    private ImageView next;
+    private ImageView previous;
+    private Boolean isPaused = false;
 
     // inflation logic
     @Override
@@ -44,6 +51,33 @@ public class SongsFragment extends Fragment {
         table = (TableLayout) v.findViewById(R.id.tlSongs);
         tvCurrentSong = (TextView) v.findViewById(R.id.tvCurrentSong);
         tvTitle = (TextView) v.findViewById(R.id.tvTopSongs);
+
+        play = (ImageView) v.findViewById(R.id.ivPlay);
+        stop = (ImageView) v.findViewById(R.id.ivStop);
+        next = (ImageView) v.findViewById(R.id.ivNext);
+        previous = (ImageView) v.findViewById(R.id.ivPrevious);
+
+        play.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (loadedSong != null) {
+                    if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+                        pauseSong();
+                    } else {
+                        playSong();
+                    }
+
+                }
+            }
+        });
+
+        stop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                stopSong();
+            }
+        });
+
         return v;
     }
 
@@ -145,8 +179,6 @@ public class SongsFragment extends Fragment {
         tvName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(SongsFragment.this.getContext(),
-                        "song is starting...", Toast.LENGTH_SHORT).show();
                 // load song
                 loadSong(song);
                 // play song
@@ -221,8 +253,34 @@ public class SongsFragment extends Fragment {
         // Trigger an async preparation which will file listener when completed
         try {
             mediaPlayer.prepareAsync();
+            play.setImageResource(R.drawable.mb_song_player_pause);
         } catch (IllegalStateException e) {
             Toast.makeText(getContext(), "The Song could not be found on the Server! "+e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void stopSong() {
+        if(mediaPlayer != null) {
+            mediaPlayer.stop();
+            mediaPlayer.release();
+            play.setImageResource(R.drawable.mb_song_player_play);
+        }
+    }
+
+    public void pauseSong() {
+        if(mediaPlayer != null) {
+            mediaPlayer.pause();
+            play.setImageResource(R.drawable.mb_song_player_play);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+            mediaPlayer = null;
         }
     }
 
