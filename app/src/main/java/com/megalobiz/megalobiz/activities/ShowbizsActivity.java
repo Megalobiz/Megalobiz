@@ -80,7 +80,7 @@ public class ShowbizsActivity extends AppCompatActivity {
 
         gvShowbiz = (GridView) findViewById(R.id.gvShowbiz);
         showbizs = new ArrayList<>();
-        aShowbiz = new ShowbizArrayAdapter(this, showbizs);
+        aShowbiz = new ShowbizArrayAdapter(this, showbizs, false);
         gvShowbiz.setAdapter(aShowbiz);
 
         // Check Network and Internet, close Activity if no internet

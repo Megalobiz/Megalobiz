@@ -24,8 +24,11 @@ import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
  */
 public class ShowbizArrayAdapter extends ArrayAdapter<Showbiz> {
 
-    public ShowbizArrayAdapter(Context context, List<Showbiz> showbizs) {
+    Boolean displayType;
+
+    public ShowbizArrayAdapter(Context context, List<Showbiz> showbizs, Boolean displayType) {
         super(context, android.R.layout.simple_list_item_1, showbizs);
+        this.displayType = displayType;
     }
 
     @Override
@@ -43,7 +46,13 @@ public class ShowbizArrayAdapter extends ArrayAdapter<Showbiz> {
         ivProfilePicture.setImageResource(0);
 
         TextView tvName = (TextView) convertView.findViewById(R.id.tvName);
+        TextView tvType = (TextView) convertView.findViewById(R.id.tvType);
+
         tvName.setText(showbiz.getName());
+        tvType.setText(showbiz.getShowbizType());
+        if(displayType) {
+            tvType.setVisibility(View.VISIBLE);
+        }
 
         // set the images with Picasso
         // set profile image
