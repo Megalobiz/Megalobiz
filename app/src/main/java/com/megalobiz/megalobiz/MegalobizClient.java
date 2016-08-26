@@ -92,6 +92,19 @@ public class MegalobizClient extends OAuthBaseClient {
         client.get(apiUrl, handler);
     }
 
+    // search Showbiz (Band, Musician, Album, Song)
+    // ex: http://megalobiz.com/api/v1/search
+    // params qry = aimer
+    public void searchShowbizs(String qry, AsyncHttpResponseHandler handler) {
+        // make the uri
+        String apiUrl = getApiUrl("search");
+
+        // Can specify query string params directly or through RequestParams.
+        RequestParams params = new RequestParams();
+        params.put("qry", qry);
+
+        client.get(apiUrl, params, handler);
+    }
 
 
 	/* 1. Define the endpoint URL with getApiUrl and pass a relative path to the endpoint

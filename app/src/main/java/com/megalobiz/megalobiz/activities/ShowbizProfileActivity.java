@@ -57,6 +57,11 @@ public class ShowbizProfileActivity extends AppCompatActivity {
         showbiz = (Showbiz) getIntent().getSerializableExtra("showbiz");
         showbizType = showbiz.getShowbizType();
 
+        if (showbiz.getName() == null) {
+            Toast.makeText(this, showbizType+" Profile error", Toast.LENGTH_SHORT).show();
+            finish();
+        }
+
         if (showbizType.equals("Band") || showbizType.equals("Musician")) {
             setContentView(R.layout.activity_showbiz_profile);
         } else if (showbizType.equals("Album") || showbizType.equals("Song")) {

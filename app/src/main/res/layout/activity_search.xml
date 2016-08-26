@@ -7,20 +7,15 @@
     android:background="#FFFFFF">
 
     <!-- The 1st child inside DrawerLaouyt is for the main Activity UI-->
-    <RelativeLayout
+    <GridView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:id="@+id/gvShowbiz"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="THIS IS THE SEARCH PLACE"
-            android:textSize="16sp"/>
-
-    </RelativeLayout>
+        android:layout_alignParentStart="true"
+        android:numColumns="4" />
 
     <!-- The 2nd child is for Side navigation drawer UI -->
     <include layout="@layout/side_menu" />

@@ -2,7 +2,11 @@ package com.megalobiz.megalobiz.models;
 
 import com.megalobiz.megalobiz.MegalobizApi;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Created by KeitelRobespierre on 8/13/2016.
@@ -76,5 +80,38 @@ public class Showbiz implements Serializable{
 
     public String getGenreName() {
         return genreName;
+    }
+
+    // For Mixed Models like in Search
+    public static ArrayList<Showbiz> fromMixedJSONArray(JSONArray json) {
+        ArrayList<Showbiz> showbizs = new ArrayList<>();;
+
+        for (int i = 0; i < json.length(); i++) {
+            try {
+                Showbiz showbiz = null;
+
+                if (json.getJSONObject(i).has("band_name")) {
+                    showbiz = Band.fromJSON(json.getJSONObject(i));
+
+                } else if (json.getJSONObject(i).has("musician_name")) {
+                    showbiz = Musician.fromJSON(json.getJSONObject(i));
+
+                } else if (json.getJSONObject(i).has("album_name")) {
+                    showbiz = Album.fromJSON(json.getJSONObject(i));
+
+                } else if (json.getJSONObject(i).has("song_name")) {
+                    showbiz = Song.fromJSON(json.getJSONObject(i));
+                }
+
+                if (showbiz != null) {
+                    showbizs.add(showbiz);
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return showbizs;
     }
 }
