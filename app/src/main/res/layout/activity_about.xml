@@ -10,4 +10,57 @@
     tools:context="com.megalobiz.megalobiz.activities.AboutActivity"
     android:background="#FFFFFF">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Megalobiz About"
+        android:id="@+id/tvAboutTitle"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textStyle="bold"
+        android:textColor="#158EC6"
+        android:textSize="26sp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tvAboutTitle"
+        android:layout_marginTop="20dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="40dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Megalobiz is a music Social Network created in order to improve Haitan Music Sector. That&apos;s why we started our niche at Haiti.
+
+
+            Our main objective is to simulate the real world interactions between :
+
+            Music Actors such as Bands, Musicians and Disc Jockeys, Photographers Managers, Promoters, Animators, Sponsors
+            Music products such as Songs, Albums, Videos, Events
+            And Melomans which are any person interested in Music.
+
+            Interactions keep growing and vary according to the Subject :
+
+            Melomans can Listen to Musics, watch Videos and rate them, create Playlists, Amplify their musical tastes and experiences with others.
+            Melomans can respect Bands, Musicians, Djs, and receive news and notifications about them.
+            Managers can manage Bands, Musicians and DJs.
+            Bands, Musicians can launch Albums and Songs.
+            Promoters can setup Events And so on..."
+            android:id="@+id/tvAboutContent"
+            android:layout_below="@+id/tvAboutTitle"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+    </ScrollView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Version 0.7"
+        android:id="@+id/textView"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
 </RelativeLayout>
