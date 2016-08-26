@@ -50,6 +50,8 @@
     <string name="musicians">Musicians</string>
     <string name="genre">Genre</string>
     <string name="members">Members</string>
+    <string name="songs">Songs</string>
+    <string name="year">Year</string>
 
 
 </resources>

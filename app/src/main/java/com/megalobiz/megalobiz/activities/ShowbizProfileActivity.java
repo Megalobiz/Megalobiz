@@ -4,7 +4,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,12 +31,11 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
-import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
 public class ShowbizProfileActivity extends AppCompatActivity {
 
@@ -54,11 +52,16 @@ public class ShowbizProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_showbiz_profile);
 
         //find Showbiz model
         showbiz = (Showbiz) getIntent().getSerializableExtra("showbiz");
         showbizType = showbiz.getShowbizType();
+
+        if (showbizType.equals("Band") || showbizType.equals("Musician")) {
+            setContentView(R.layout.activity_showbiz_profile);
+        } else if (showbizType.equals("Album") || showbizType.equals("Song")) {
+            setContentView(R.layout.activity_showbiz_media_profile);
+        }
 
         resourceTitle = R.string.showbiz_title;
 
@@ -164,11 +167,11 @@ public class ShowbizProfileActivity extends AppCompatActivity {
 
                         } else if(showbizType.equals("Album")) {
                             showbiz = Album.fromJSON(response.getJSONObject("album"));
-                            //displayFullAlbum();
+                            displayAlbum();
 
                         } else if(showbizType.equals("Song")) {
                             showbiz = Song.fromJSON(response.getJSONObject("song"));
-                            //displayFullSong();
+                            displaySong();
                         }
                     }
 
@@ -233,7 +236,7 @@ public class ShowbizProfileActivity extends AppCompatActivity {
 
         // set Members
         if(band.getMusicians() != null && band.getMusicians().size() > 0) {
-            setupMusicianMembers(band.getMusicians());
+            setupMusicianMembers(band.getMusicians(), null);
         }
 
         if(band.getAlbums() != null && (band.getAlbums().size() > 0)) {
@@ -295,12 +298,80 @@ public class ShowbizProfileActivity extends AppCompatActivity {
         }
     }
 
-    public void setupMusicianMembers(ArrayList<Musician> musicians) {
+    public void displayAlbum() {
+        Album album = (Album) showbiz;
+
+        TextView tvName = (TextView) findViewById(R.id.tvName);
+        TextView tvGenre = (TextView) findViewById(R.id.tvGenre);
+        TextView tvSongsCount = (TextView) findViewById(R.id.tvSongsCount);
+        TextView tvLabelSongs = (TextView) findViewById(R.id.tvLabelSongs);
+        TextView tvRespectsCount = (TextView) findViewById(R.id.tvRespectsCount);
+        TextView tvYear = (TextView) findViewById(R.id.tvYear);
+        ImageView ivProfile = (ImageView) findViewById(R.id.ivProfile);
+
+        tvName.setText(album.getName());
+        tvGenre.setText(album.getGenreName());
+
+        tvSongsCount.setText(String.valueOf(0));
+        if (album.getSongs() != null) {
+            tvSongsCount.setText(String.valueOf(album.getSongs().size()));
+        }
+        tvSongsCount.setVisibility(View.VISIBLE);
+        tvLabelSongs.setVisibility(View.VISIBLE);
+
+        tvRespectsCount.setText(String.valueOf(album.getRespects()));
+        tvYear.setText(String.valueOf(album.getYear()));
+
+        // load profile image
+        String profileUrl = album.getSmallProfilePicture();
+        Picasso.with(this).load(profileUrl)
+                .into(ivProfile);
+        
+        if(album.getSongs() != null && album.getSongs().size() > 0) {
+            setupSongMembers(album.getSongs(), "Songs");
+        }
+    }
+
+    public void displaySong() {
+        Song song = (Song) showbiz;
+
+        TextView tvName = (TextView) findViewById(R.id.tvName);
+        TextView tvGenre = (TextView) findViewById(R.id.tvGenre);
+        TextView tvSongsCount = (TextView) findViewById(R.id.tvSongsCount);
+        TextView tvLabelSongs = (TextView) findViewById(R.id.tvLabelSongs);
+        TextView tvRespectsCount = (TextView) findViewById(R.id.tvRespectsCount);
+        TextView tvYear = (TextView) findViewById(R.id.tvYear);
+        ImageView ivProfile = (ImageView) findViewById(R.id.ivProfile);
+
+        tvName.setText(song.getName());
+        tvGenre.setText(song.getGenreName());
+
+        tvRespectsCount.setText(String.valueOf(song.getRespects()));
+        tvYear.setText(String.valueOf(song.getYear()));
+
+        // load profile image
+        String profileUrl = song.getSmallProfilePicture();
+        Picasso.with(this).load(profileUrl)
+                .into(ivProfile);
+
+        if(song.getFeaturingMusicians() != null && song.getFeaturingMusicians().size() > 0) {
+            setupMusicianMembers(song.getFeaturingMusicians(), "Featuring Musicians");
+        }
+
+        ArrayList<Song> songs = new ArrayList<>();
+        songs.add(song);
+        setupSongMembers(songs, "Song");
+    }
+
+    public void setupMusicianMembers(ArrayList<Musician> musicians, String title) {
         // setup showbiz member Fragment
         ArrayList<Showbiz> mShowbizs = new ArrayList<>();
         mShowbizs.addAll(musicians);
 
         ShowbizMembersFragment fgMusician = ShowbizMembersFragment.newInstance(mShowbizs, "Musician", false);
+        if(title != null) {
+            fgMusician.setTitle(title);
+        }
         FragmentTransaction ftMusician = getSupportFragmentManager().beginTransaction();
         ftMusician.replace(R.id.flMusicians, fgMusician);
         ftMusician.commit();

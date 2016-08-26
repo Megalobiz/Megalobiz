@@ -1,6 +1,5 @@
 package com.megalobiz.megalobiz.fragments;
 
-import android.app.Activity;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -16,12 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.megalobiz.megalobiz.R;
-import com.megalobiz.megalobiz.activities.TopShowbizActivity;
 import com.megalobiz.megalobiz.activities.helpers.SharedMenu;
 import com.megalobiz.megalobiz.models.Song;
-import com.squareup.picasso.Picasso;
-
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -116,7 +111,7 @@ public class SongsFragment extends Fragment {
         View v = inflater.inflate(R.layout.top_song, null);
         TextView tvName = (TextView) v.findViewById(R.id.tvName);
         TextView tvMusicianPosition = (TextView) v.findViewById(R.id.tvPosition);
-        TextView tvOwner = (TextView) v.findViewById(R.id.tvOwner);
+        TextView tvOwner = (TextView) v.findViewById(R.id.tvAlbumsCount);
 
         ImageView imageView = (ImageView) v.findViewById(R.id.ivProfilePicture);
         //imageView.setBackgroundResource(0);
