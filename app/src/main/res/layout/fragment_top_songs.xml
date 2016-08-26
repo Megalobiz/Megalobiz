@@ -109,7 +109,7 @@
                 android:id="@+id/pbPlayer"
                 android:layout_gravity="center_horizontal"
                 android:max="100"
-                android:progress="15"
+                android:progress="0"
                 android:background="#FFFFFF"
                 android:layout_alignParentBottom="false"
                 android:layout_centerInParent="true"
