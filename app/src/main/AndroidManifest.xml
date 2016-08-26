@@ -36,7 +36,7 @@
             android:launchMode="singleTask" />
         <activity
             android:name=".activities.TopShowbizActivity"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTop" />
         <activity android:name=".activities.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -46,10 +46,10 @@
         </activity>
         <activity
             android:name=".activities.ShowbizsActivity"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTop" />
         <activity
             android:name=".activities.ShowbizProfileActivity"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTop" />
         <activity
             android:name=".activities.SearchActivity"
             android:launchMode="singleTask" />

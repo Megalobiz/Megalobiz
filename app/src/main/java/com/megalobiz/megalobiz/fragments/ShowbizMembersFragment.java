@@ -1,5 +1,6 @@
 package com.megalobiz.megalobiz.fragments;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,9 +18,12 @@ import android.widget.TextView;
 import com.megalobiz.megalobiz.MegalobizApplication;
 import com.megalobiz.megalobiz.MegalobizClient;
 import com.megalobiz.megalobiz.R;
+import com.megalobiz.megalobiz.activities.ShowbizProfileActivity;
 import com.megalobiz.megalobiz.models.Album;
 import com.megalobiz.megalobiz.models.Showbiz;
 import com.squareup.picasso.Picasso;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -50,6 +54,12 @@ public class ShowbizMembersFragment extends Fragment {
         }
 
         v = inflater.inflate(res, container, false);
+
+        // set Title if normal showbiz members is used
+        if(res == R.layout.fragment_showbiz_members) {
+            TextView tvMembersTitle = (TextView) v.findViewById(R.id.tvMembersTitle);
+            tvMembersTitle.setText(showbizType + "s");
+        }
 
         table = (TableLayout) v.findViewById(R.id.tlShowbizs);
 
@@ -195,7 +205,7 @@ public class ShowbizMembersFragment extends Fragment {
 
     }
 
-    public View createShowbizView(Showbiz showbiz) {
+    public View createShowbizView(final Showbiz showbiz) {
         LayoutInflater inflater = LayoutInflater.from(getContext());
         View v = inflater.inflate(R.layout.showbiz_item, null);
         TextView tvName = (TextView) v.findViewById(R.id.tvName);
@@ -211,10 +221,18 @@ public class ShowbizMembersFragment extends Fragment {
                 .transform(new RoundedCornersTransformation(5, 5))
                 .into(imageView);
 
+        // create on click listener
+        imageView.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                launchShowbizProfile(showbiz);
+            }
+        });
+
         return v;
     }
 
-    public View createTopMusicianView(Showbiz showbiz, int position) {
+    public View createTopMusicianView(final Showbiz showbiz, int position) {
         LayoutInflater inflater = LayoutInflater.from(getContext());
         View v = inflater.inflate(R.layout.top_musician, null);
         TextView tvName = (TextView) v.findViewById(R.id.tvName);
@@ -233,12 +251,20 @@ public class ShowbizMembersFragment extends Fragment {
                 .transform(new RoundedCornersTransformation(5, 5))
                 .into(imageView);
 
+        // create on click listener
+        v.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                launchShowbizProfile(showbiz);
+            }
+        });
+
         return v;
     }
 
-    public View createTopAlbumView(Showbiz showbiz, int position) {
+    public View createTopAlbumView(final Showbiz showbiz, int position) {
         // showbiz is an album
-        Album album = (Album) showbiz;
+        final Album album = (Album) showbiz;
 
         LayoutInflater inflater = LayoutInflater.from(getContext());
         View v = inflater.inflate(R.layout.top_album, null);
@@ -266,8 +292,30 @@ public class ShowbizMembersFragment extends Fragment {
                 .transform(new RoundedCornersTransformation(5, 5))
                 .into(imageView);
 
+        // create album on click listener
+        imageView.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                launchShowbizProfile(showbiz);
+            }
+        });
+
+        // create on click listener
+        tvOwner.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                launchShowbizProfile(album.getOwner());
+            }
+        });
+
         return v;
     }
 
+
+    public void launchShowbizProfile(Showbiz showbiz) {
+        Intent i = new Intent(getActivity(), ShowbizProfileActivity.class);
+        i.putExtra("showbiz", showbiz);
+        startActivity(i);
+    }
 
 }

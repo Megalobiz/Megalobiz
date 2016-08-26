@@ -15,6 +15,18 @@ public class Band extends Showbiz {
     private ArrayList<Album> albums;
     private ArrayList<Song> songs;
 
+    public ArrayList<Album> getAlbums() {
+        return albums;
+    }
+
+    public ArrayList<Musician> getMusicians() {
+        return musicians;
+    }
+
+    public ArrayList<Song> getSongs() {
+        return songs;
+    }
+
     public Band() {
         showbizType = "Band";
     }
@@ -25,6 +37,7 @@ public class Band extends Showbiz {
         try {
             band.id = json.getInt("band_id");
             band.name = json.getString("band_name");
+            band.respects = json.getInt("respects");
 
             // pictures
             // get profile basepath
@@ -36,12 +49,26 @@ public class Band extends Showbiz {
             // get profile path
             band.wallFilename = json.getJSONObject("pictures").getJSONObject("wall").getString("path");
 
+            // Genre Name
+            if(json.has("music_genre")) {
+                band.genreName = json.getJSONObject("music_genre").getString("genre_name");
+            }
+
             // Collection Models
             // Musicians
+            if(json.has("musicians")) {
+                band.musicians = Musician.fromJSONArray(json.getJSONArray("musicians"));
+            }
 
             // Albums
+            if(json.has("albums")) {
+                band.albums = Album.fromJSONArray(json.getJSONArray("albums"));
+            }
 
             // Songs
+            if(json.has("songs")) {
+                band.songs = Song.fromJSONArray(json.getJSONArray("songs"));
+            }
 
 
         } catch (JSONException e) {

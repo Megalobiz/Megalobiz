@@ -41,7 +41,12 @@ public class MegalobizApplication extends com.activeandroid.app.Application {
     }
 
     public static MegalobizClient getRestClient() {
-        return (MegalobizClient) MegalobizClient.getInstance(MegalobizClient.class, MegalobizApplication.context);
+        try {
+            return (MegalobizClient) MegalobizClient.getInstance(MegalobizClient.class, MegalobizApplication.context);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public static User getAuthUser() {

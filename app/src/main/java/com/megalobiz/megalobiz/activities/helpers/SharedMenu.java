@@ -12,6 +12,8 @@ import com.megalobiz.megalobiz.MegalobizClient;
 import com.megalobiz.megalobiz.R;
 import com.megalobiz.megalobiz.activities.LoginActivity;
 import com.megalobiz.megalobiz.activities.SearchActivity;
+import com.megalobiz.megalobiz.activities.ShowbizProfileActivity;
+import com.megalobiz.megalobiz.models.Showbiz;
 
 /**
  * Created by KeitelRobespierre on 8/17/2016.
@@ -81,4 +83,9 @@ public class SharedMenu {
         menuContext.startActivity(i);
     }
 
+    public static void launchShowbizProfile(Context context, Showbiz showbiz) {
+        Intent i = new Intent(context, ShowbizProfileActivity.class);
+        i.putExtra("showbiz", showbiz);
+        context.startActivity(i);
+    }
 }

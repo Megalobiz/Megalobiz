@@ -43,6 +43,13 @@
     <string name="owner">Owner</string>
     <string name="top_songs">Top Songs</string>
     <string name="top_albums">Top Albums</string>
+    <string name="singles">Singles</string>
+    <string name="unrespected">Unrespected</string>
+    <string name="unknown">Unknown</string>
+    <string name="albums">Albums</string>
+    <string name="musicians">Musicians</string>
+    <string name="genre">Genre</string>
+    <string name="members">Members</string>
 
 
 </resources>

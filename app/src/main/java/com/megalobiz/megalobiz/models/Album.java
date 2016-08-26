@@ -51,12 +51,19 @@ public class Album extends Showbiz {
             album.id = json.getInt("album_id");
             album.name = json.getString("album_name");
             album.year = json.getInt("theyear");
+            album.respects = json.getInt("respects");
 
             // pictures
             // get profile basepath
             album.profileBasepath = json.getJSONObject("pictures").getJSONObject("profile").getString("base_path");
             // get profile path
             album.profileFilename = json.getJSONObject("pictures").getJSONObject("profile").getString("path");
+
+            // Genre Name
+            // Genre Name
+            if(json.has("music_genre")) {
+                album.genreName = json.getJSONObject("music_genre").getString("genre_name");
+            }
 
             // owner (Band or Musician)
             if(json.has("owner")) {
@@ -71,8 +78,12 @@ public class Album extends Showbiz {
                     album.owner = Musician.fromJSON(jsonOwner);
                 }
             }
+
             // Collection Models
             // Songs
+            if(json.has("songs")) {
+                album.songs = Song.fromJSONArray(json.getJSONArray("songs"));
+            }
 
 
         } catch (JSONException e) {

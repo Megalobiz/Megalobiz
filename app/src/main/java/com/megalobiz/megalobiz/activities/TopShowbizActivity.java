@@ -193,7 +193,7 @@ public class TopShowbizActivity extends AppCompatActivity {
 
         // TOP 5 Songs ------
         // setup songs Fragment
-        SongsFragment fgSong = SongsFragment.newInstance(songs, true);
+        SongsFragment fgSong = SongsFragment.newInstance(songs, true, "Top Songs");
         FragmentTransaction ftSong = getSupportFragmentManager().beginTransaction();
         ftSong.replace(R.id.flTopSongs, fgSong);
         ftSong.commit();

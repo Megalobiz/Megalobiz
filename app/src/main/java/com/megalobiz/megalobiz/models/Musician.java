@@ -17,6 +17,22 @@ public class Musician extends Showbiz {
     private ArrayList<Song> songs;
     private ArrayList<Song> featuringSongs;
 
+    public ArrayList<Album> getAlbums() {
+        return albums;
+    }
+
+    public ArrayList<Song> getFeaturingSongs() {
+        return featuringSongs;
+    }
+
+    public ArrayList<Song> getSongs() {
+        return songs;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
     public Musician() {
         showbizType = "Musician";
     }
@@ -27,6 +43,7 @@ public class Musician extends Showbiz {
         try {
             musician.id = json.getInt("musician_id");
             musician.name = json.getString("musician_name");
+            musician.respects = json.getInt("respects");
 
             // pictures
             // get profile basepath
@@ -38,10 +55,37 @@ public class Musician extends Showbiz {
             // get profile path
             musician.wallFilename = json.getJSONObject("pictures").getJSONObject("wall").getString("path");
 
+            // Genre Name
+            if(json.has("music_genre")) {
+                musician.genreName = json.getJSONObject("music_genre").getString("genre_name");
+            }
+
             // Collection Models
             // Albums
+            if(json.has("albums")) {
+                musician.albums = Album.fromJSONArray(json.getJSONArray("albums"));
+            }
 
             // Songs
+            if(json.has("owned_songs")) {
+                musician.songs = Song.fromJSONArray(json.getJSONArray("owned_songs"));
+            }
+
+            // featuring songs
+            if(json.has("featuring_songs")) {
+                if(json.getJSONArray("featuring_songs") != null) {
+                    musician.featuringSongs = Song.fromJSONArray(json.getJSONArray("featuring_songs"));
+
+                } else if(json.getJSONObject("featuring_songs") != null) {
+                    JSONArray jsonSongs = new JSONArray();
+
+                    if(json.getJSONObject("featuring_songs").has("11")) {
+                        JSONObject jsonSong = json.getJSONObject("featuring_songs").getJSONObject("11");
+                        jsonSongs.put(jsonSong);
+                        musician.featuringSongs = Song.fromJSONArray(jsonSongs);
+                    }
+                }
+            }
 
         } catch (JSONException e) {
             e.printStackTrace();
