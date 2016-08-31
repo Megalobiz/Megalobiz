@@ -7,16 +7,20 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.megalobiz.megalobiz.MegalobizApplication;
 import com.megalobiz.megalobiz.R;
 import com.megalobiz.megalobiz.activities.AboutActivity;
 import com.megalobiz.megalobiz.activities.ShowbizsActivity;
 import com.megalobiz.megalobiz.activities.TopShowbizActivity;
 import com.megalobiz.megalobiz.adapters.HamburgerArrayAdapter;
 import com.megalobiz.megalobiz.utils.HamburgerItem;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -64,6 +68,16 @@ public class SharedHamburger {
         });
 
         drawerToggle = new ActionBarDrawerToggle(activity, dlHamburger, R.string.drawer_open, resourceTitle) {
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+                super.onDrawerSlide(drawerView, slideOffset);
+
+                // if grant type is Authorization Code, display Authenticated User views
+                if (MegalobizApplication.grantType == MegalobizApplication.OAuthGrantType.AUTHORIZATION) {
+                    SharedHamburger.setupAuthUserViews();
+                }
+            }
+
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
@@ -162,5 +176,16 @@ public class SharedHamburger {
     public static void showAbout() {
         Intent i = new Intent(hamContext, AboutActivity.class);
         hamContext.startActivity(i);
+    }
+
+    public static void setupAuthUserViews() {
+        ImageView ivAuthPicture = (ImageView) activity.findViewById(R.id.ivAuthPicture);
+        TextView tvAuthName = (TextView) activity.findViewById(R.id.tvAuthName);
+
+        tvAuthName.setText(Auth.getUser().getName());
+        ivAuthPicture.setImageResource(0);
+
+        String imageUrl = Auth.getUser().getTinyProfilePicture();
+        Picasso.with(activity).load(imageUrl).into(ivAuthPicture);
     }
 }

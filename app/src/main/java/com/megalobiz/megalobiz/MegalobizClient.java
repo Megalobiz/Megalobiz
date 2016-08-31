@@ -106,6 +106,14 @@ public class MegalobizClient extends OAuthBaseClient {
         client.get(apiUrl, params, handler);
     }
 
+    // get Authenticated User
+    // ex: http://megalobiz.com/api/v1/user/auth/info
+    public void getAuthUser(AsyncHttpResponseHandler handler) {
+        // make the uri
+        String apiUrl = getApiUrl("user/auth/info");
+        client.get(apiUrl, handler);
+    }
+
 
 	/* 1. Define the endpoint URL with getApiUrl and pass a relative path to the endpoint
 	 * 	  i.e getApiUrl("statuses/home_timeline.json");

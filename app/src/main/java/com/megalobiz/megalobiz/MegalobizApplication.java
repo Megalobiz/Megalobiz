@@ -24,8 +24,6 @@ public class MegalobizApplication extends com.activeandroid.app.Application {
 
     private static Context context;
 
-    private static User authUser;
-
     public enum OAuthGrantType {
         CLIENT_CREDENTIALS, AUTHORIZATION
     }
@@ -47,13 +45,5 @@ public class MegalobizApplication extends com.activeandroid.app.Application {
             e.printStackTrace();
         }
         return null;
-    }
-
-    public static User getAuthUser() {
-        return MegalobizApplication.authUser;
-    }
-
-    public static void setUser(User user) {
-        MegalobizApplication.authUser = user;
     }
 }
