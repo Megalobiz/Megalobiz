@@ -195,9 +195,14 @@ public class SongPlayer {
         loadedSong = songs.get(index);
         tvCurrentSong.setText(String.format("Song : %s", loadedSong.getName()));
 
-        // clear all colors
-        TextView tvName = tvSongNames.get(index);
-        tvName.setTextColor(Color.parseColor("#158EC6"));
+        // clear all colors and set megalobiz blue to current playing song text view
+        if (tvSongNames.size() > 0) {
+            clearTitleColors();
+
+            // set blue color to selected song
+            TextView tvName = tvSongNames.get(index);
+            tvName.setTextColor(Color.parseColor("#158EC6"));
+        }
 
         displayTime(tvProgressTime, (long) startTime);
         displayTime(tvTotalTime, (long) finalTime);
@@ -277,6 +282,7 @@ public class SongPlayer {
 
                 myHandler.removeCallbacks(UpdateSongTime);
                 sbPlayer.setProgress(0);
+                clearTitleColors();
             }
         }
     }
@@ -322,5 +328,12 @@ public class SongPlayer {
                         TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.
                                 toMinutes((long) time)))
         );
+    }
+
+    public void clearTitleColors() {
+        // clear colors
+        for(TextView tvSongName : tvSongNames) {
+            tvSongName.setTextColor(Color.parseColor("#222222"));
+        }
     }
 }
