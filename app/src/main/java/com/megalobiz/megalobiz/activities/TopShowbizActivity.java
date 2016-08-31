@@ -11,12 +11,15 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.megalobiz.megalobiz.MegalobizApplication;
 import com.megalobiz.megalobiz.MegalobizClient;
 import com.megalobiz.megalobiz.R;
+import com.megalobiz.megalobiz.activities.helpers.Auth;
 import com.megalobiz.megalobiz.activities.helpers.SharedHamburger;
 import com.megalobiz.megalobiz.activities.helpers.SharedMenu;
 import com.megalobiz.megalobiz.fragments.ShowbizMembersFragment;
@@ -29,10 +32,12 @@ import com.megalobiz.megalobiz.models.Showbiz;
 import com.megalobiz.megalobiz.models.Song;
 import com.megalobiz.megalobiz.models.User;
 import com.megalobiz.megalobiz.utils.NetworkState;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 
 import java.util.ArrayList;
@@ -80,6 +85,12 @@ public class TopShowbizActivity extends AppCompatActivity {
         if (nt.isNetworkAvailable() && NetworkState.isOnline()) {
             // start
             fetchTopShowbiz();
+
+            // if grant type is Authorization Code, fetch Authenticated User
+            if (MegalobizApplication.grantType == MegalobizApplication.OAuthGrantType.AUTHORIZATION) {
+                fetchAuthUser();
+            }
+
         } else {
             Toast.makeText(this, "Please Check your Internet Connection!", Toast.LENGTH_LONG).show();
         }
@@ -205,4 +216,34 @@ public class TopShowbizActivity extends AppCompatActivity {
         i.putExtra("showbiz", showbiz);
         startActivity(i);
     }
+
+    public void fetchAuthUser() {
+        client.getAuthUser(new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                try {
+                    if(response.getBoolean("error")) {
+                        Log.d("DEBUG", response.getString("mesage"));
+                        Toast.makeText(TopShowbizActivity.this,
+                                "Error: " + response.getString("message"), Toast.LENGTH_LONG).show();
+                    } else {
+
+                        // Parse top models from JSON
+                        authUser = User.fromJSON(response.getJSONObject("user"));
+                        Auth.setUser(authUser);
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+                Log.d("DEBUG", errorResponse.toString());
+            }
+        });
+    }
+
 }
