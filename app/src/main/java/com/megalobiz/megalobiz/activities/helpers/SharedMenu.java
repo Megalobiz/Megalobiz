@@ -13,6 +13,7 @@ import com.megalobiz.megalobiz.R;
 import com.megalobiz.megalobiz.activities.LoginActivity;
 import com.megalobiz.megalobiz.activities.SearchActivity;
 import com.megalobiz.megalobiz.activities.ShowbizProfileActivity;
+import com.megalobiz.megalobiz.activities.TopShowbizActivity;
 import com.megalobiz.megalobiz.models.Showbiz;
 
 /**

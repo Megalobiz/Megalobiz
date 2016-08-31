@@ -13,6 +13,7 @@ import java.util.ArrayList;
 public class Musician extends Showbiz {
 
     private User user;
+    private Band band;
     private ArrayList<Album> albums;
     private ArrayList<Song> songs;
     private ArrayList<Song> featuringSongs;
@@ -31,6 +32,14 @@ public class Musician extends Showbiz {
 
     public User getUser() {
         return user;
+    }
+
+    public Band getBand() {
+        return band;
+    }
+
+    public void setBand(Band band) {
+        this.band = band;
     }
 
     public Musician() {

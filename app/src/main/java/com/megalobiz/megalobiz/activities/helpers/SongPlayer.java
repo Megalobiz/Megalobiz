@@ -2,6 +2,7 @@ package com.megalobiz.megalobiz.activities.helpers;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Handler;
@@ -33,6 +34,7 @@ public class SongPlayer {
     private Song loadedSong;
     private ArrayList<Song> songs;
     private String songsListId;
+    private ArrayList<TextView> tvSongNames;
 
     // player views
     private TextView tvCurrentSong;
@@ -68,7 +70,7 @@ public class SongPlayer {
         return _instance;
     }
 
-    public void init(Context context, View view, ArrayList<Song> songs, String songsListId) {
+    public void init(Context context, View view, ArrayList<Song> songs, ArrayList<TextView> tvSongNames, String songsListId) {
 
         if(mediaPlayer != null) {
             mediaPlayer.release();
@@ -80,6 +82,7 @@ public class SongPlayer {
         this.view = view;
         this.songs = songs;
         this.songsListId = songsListId;
+        this.tvSongNames = tvSongNames;
 
         // before setting up views, make sure to reset previous views if already initialized
         if (songsListId != null) {
@@ -191,6 +194,10 @@ public class SongPlayer {
     public void selectSong(int index) {
         loadedSong = songs.get(index);
         tvCurrentSong.setText(String.format("Song : %s", loadedSong.getName()));
+
+        // clear all colors
+        TextView tvName = tvSongNames.get(index);
+        tvName.setTextColor(Color.parseColor("#158EC6"));
 
         displayTime(tvProgressTime, (long) startTime);
         displayTime(tvTotalTime, (long) finalTime);

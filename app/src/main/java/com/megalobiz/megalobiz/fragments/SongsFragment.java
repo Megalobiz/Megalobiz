@@ -15,6 +15,8 @@ import com.megalobiz.megalobiz.activities.helpers.SharedMenu;
 import com.megalobiz.megalobiz.activities.helpers.SongPlayer;
 import com.megalobiz.megalobiz.models.Song;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -31,6 +33,7 @@ public class SongsFragment extends Fragment {
     private TextView tvTitle;
     private View rootView;
     private String songsListId;
+    private ArrayList<TextView> tvSongNames;
 
     // inflation logic
     @Override
@@ -44,7 +47,7 @@ public class SongsFragment extends Fragment {
         songPlayer = SongPlayer.getInstance();
 
         if(songPlayer.getSongsListId() == null) {
-            songPlayer.init(getContext(), v, songs, songsListId);
+            songPlayer.init(getContext(), v, songs, tvSongNames, songsListId);
 
             // setup Media Player
             songPlayer.initializeSongPlayer();
@@ -69,6 +72,8 @@ public class SongsFragment extends Fragment {
         songs = (ArrayList<Song>) getArguments().getSerializable("songs");
         forTop = getArguments().getBoolean("forTop");
         title = getArguments().getString("title");
+
+        tvSongNames = new ArrayList<>();
 
         //mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
     }
@@ -96,7 +101,7 @@ public class SongsFragment extends Fragment {
         super.onResume();
 
         if(songPlayer.getSongsListId() == null) {
-            songPlayer.init(getContext(), rootView, songs, songsListId);
+            songPlayer.init(getContext(), rootView, songs, tvSongNames, songsListId);
             // setup Media Player
             songPlayer.initializeSongPlayer();
             // select song
@@ -153,6 +158,9 @@ public class SongsFragment extends Fragment {
 
         tvOwner.setText(owner);
 
+        // fill list of textview names
+        tvSongNames.add(tvName);
+
         // load image
         /*
         String imageUrl = song.getSmallProfilePicture();
@@ -172,7 +180,7 @@ public class SongsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if(songPlayer.getSongsListId() != songsListId) {
-                    songPlayer.init(getContext(), rootView, songs, songsListId);
+                    songPlayer.init(getContext(), rootView, songs, tvSongNames, songsListId);
                 }
 
                 songPlayer.initializeSongPlayer();

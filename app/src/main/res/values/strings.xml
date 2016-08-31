@@ -53,6 +53,7 @@
     <string name="songs">Songs</string>
     <string name="year">Year</string>
     <string name="showbiz_type">Type</string>
+    <string name="band">Band</string>
 
 
 </resources>
