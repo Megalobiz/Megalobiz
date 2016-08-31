@@ -1,7 +1,5 @@
 package com.megalobiz.megalobiz.fragments;
 
-import android.media.AudioManager;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,71 +10,52 @@ import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.megalobiz.megalobiz.R;
 import com.megalobiz.megalobiz.activities.helpers.SharedMenu;
+import com.megalobiz.megalobiz.activities.helpers.SongPlayer;
 import com.megalobiz.megalobiz.models.Song;
 
 import org.w3c.dom.Text;
 
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  * Created by KeitelRobespierre on 8/20/2016.
  */
 public class SongsFragment extends Fragment {
 
-    MediaPlayer mediaPlayer;
+    SongPlayer songPlayer;
     private ArrayList<Song> songs;
     private TableLayout table;
     private boolean forTop;
     private String title;
     private TextView tvTitle;
-    private Song loadedSong;
-    private TextView tvCurrentSong;
-    private ImageView play;
-    private ImageView stop;
-    private ImageView next;
-    private ImageView previous;
-    private Boolean isPaused = false;
+    private View rootView;
+    private String songsListId;
+    private ArrayList<TextView> tvSongNames;
 
     // inflation logic
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         View v = inflater.inflate(R.layout.fragment_top_songs, container, false);
-        //parentView = v;
+        rootView = v;
+
         table = (TableLayout) v.findViewById(R.id.tlSongs);
-        tvCurrentSong = (TextView) v.findViewById(R.id.tvCurrentSong);
         tvTitle = (TextView) v.findViewById(R.id.tvTopSongs);
 
-        play = (ImageView) v.findViewById(R.id.ivPlay);
-        stop = (ImageView) v.findViewById(R.id.ivStop);
-        next = (ImageView) v.findViewById(R.id.ivNext);
-        previous = (ImageView) v.findViewById(R.id.ivPrevious);
+        songPlayer = SongPlayer.getInstance();
 
-        play.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (loadedSong != null) {
-                    if (mediaPlayer != null && mediaPlayer.isPlaying()) {
-                        pauseSong();
-                    } else {
-                        playSong();
-                    }
+        if(songPlayer.getSongsListId() == null) {
+            songPlayer.init(getContext(), v, songs, tvSongNames, songsListId);
 
-                }
-            }
-        });
-
-        stop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                stopSong();
-            }
-        });
+            // setup Media Player
+            songPlayer.initializeSongPlayer();
+            // select song
+            songPlayer.selectSong(0);
+            // set DataSource
+            songPlayer.loadSong();
+        }
 
         return v;
     }
@@ -87,10 +66,15 @@ public class SongsFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // set unique id to this songs list
+        songsListId = UUID.randomUUID().toString();
+
         songs = (ArrayList<Song>) getArguments().getSerializable("songs");
         forTop = getArguments().getBoolean("forTop");
         title = getArguments().getString("title");
-        //mediaPlayer = new MediaPlayer();
+
+        tvSongNames = new ArrayList<>();
+
         //mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
     }
 
@@ -99,9 +83,6 @@ public class SongsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         populateSongsTable();
-
-        // load default first song
-        loadSong(songs.get(0));
     }
 
     public static SongsFragment newInstance(ArrayList<Song> songs, boolean forTop, String title) {
@@ -113,6 +94,22 @@ public class SongsFragment extends Fragment {
         fg.setArguments(args);
 
         return fg;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if(songPlayer.getSongsListId() == null) {
+            songPlayer.init(getContext(), rootView, songs, tvSongNames, songsListId);
+            // setup Media Player
+            songPlayer.initializeSongPlayer();
+            // select song
+            songPlayer.selectSong(0);
+            // set DataSource
+            songPlayer.loadSong();
+        }
+
     }
 
     public void populateSongsTable() {
@@ -161,6 +158,9 @@ public class SongsFragment extends Fragment {
 
         tvOwner.setText(owner);
 
+        // fill list of textview names
+        tvSongNames.add(tvName);
+
         // load image
         /*
         String imageUrl = song.getSmallProfilePicture();
@@ -171,7 +171,7 @@ public class SongsFragment extends Fragment {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SharedMenu.launchShowbizProfile(getContext(), song);
+                SharedMenu.launchShowbizProfile(getActivity(), song);
             }
         });
 
@@ -179,109 +179,21 @@ public class SongsFragment extends Fragment {
         tvName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(songPlayer.getSongsListId() != songsListId) {
+                    songPlayer.init(getContext(), rootView, songs, tvSongNames, songsListId);
+                }
+
+                songPlayer.initializeSongPlayer();
                 // load song
-                loadSong(song);
+                songPlayer.selectSong(songs.indexOf(song));
+                songPlayer.loadSong();
                 // play song
-                playSong();
+                songPlayer.prepareSong();
             }
         });
 
 
         return v;
-    }
-
-    private void loadSong(Song song) {
-        this.loadedSong = song;
-        tvCurrentSong.setText(String.format("Song : %s", song.getName()));
-    }
-
-    private void playSong() {
-
-        String url = loadedSong.getFullPath();
-
-        if(mediaPlayer != null) {
-            mediaPlayer.release();
-            mediaPlayer = null;
-        }
-
-        //url = "https://dl.dropboxusercontent.com/u/10281242/sample_audio.mp3";
-        //url = "http://192.168.1.100/songs/album/album_1000/song_You%20don't%20want%20me_1379645637.mp3";
-        url = url.replace(" ", "%20");
-
-        mediaPlayer = new MediaPlayer();
-        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-
-        // Listen for if the audio file can't be prepared
-        mediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
-            @Override
-            public boolean onError(MediaPlayer mp, int what, int extra) {
-                // ... react appropriately ...
-                // The MediaPlayer has moved to the Error state, must be reset!
-                return false;
-            }
-        });
-
-        // Attach to when audio file is prepared for playing
-        mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mp) {
-                mediaPlayer.start();
-            }
-        });
-
-        /*mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-                mp.release();
-                mp = null;
-            }
-        });*/
-
-        // Set the data source to the remote URL
-        try {
-            mediaPlayer.setDataSource(url);
-        } catch (IllegalArgumentException e) {
-            Toast.makeText(getContext(), "The Song could not be found on the Server! "+e.getMessage(), Toast.LENGTH_LONG).show();
-        } catch (SecurityException e) {
-            Toast.makeText(getContext(), "The Song could not be found on the Server! "+e.getMessage(), Toast.LENGTH_LONG).show();
-        } catch (IllegalStateException e) {
-            Toast.makeText(getContext(), "The Song could not be found on the Server! "+e.getMessage(), Toast.LENGTH_LONG).show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        // Trigger an async preparation which will file listener when completed
-        try {
-            mediaPlayer.prepareAsync();
-            play.setImageResource(R.drawable.mb_song_player_pause);
-        } catch (IllegalStateException e) {
-            Toast.makeText(getContext(), "The Song could not be found on the Server! "+e.getMessage(), Toast.LENGTH_LONG).show();
-        }
-    }
-
-    public void stopSong() {
-        if(mediaPlayer != null) {
-            mediaPlayer.stop();
-            mediaPlayer.release();
-            play.setImageResource(R.drawable.mb_song_player_play);
-        }
-    }
-
-    public void pauseSong() {
-        if(mediaPlayer != null) {
-            mediaPlayer.pause();
-            play.setImageResource(R.drawable.mb_song_player_play);
-        }
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-        if (mediaPlayer != null) {
-            mediaPlayer.release();
-            mediaPlayer = null;
-        }
     }
 
 }

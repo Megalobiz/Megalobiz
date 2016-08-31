@@ -1,5 +1,6 @@
 package com.megalobiz.megalobiz.activities;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -257,6 +258,7 @@ public class ShowbizProfileActivity extends AppCompatActivity {
         Musician musician = (Musician) showbiz;
 
         TextView tvName = (TextView) findViewById(R.id.tvName);
+        TextView tvBand = (TextView) findViewById(R.id.tvBand);
         TextView tvGenre = (TextView) findViewById(R.id.tvGenre);
         TextView tvAlbumsCount = (TextView) findViewById(R.id.tvAlbumsCount);
         TextView tvSongsCount = (TextView) findViewById(R.id.tvSongsCount);
@@ -266,6 +268,7 @@ public class ShowbizProfileActivity extends AppCompatActivity {
 
         tvName.setText(musician.getName());
         tvGenre.setText(musician.getGenreName());
+        //tvBand.setText(musician);
 
         tvAlbumsCount.setText(String.valueOf(0));
         if (musician.getAlbums() != null) {
@@ -304,10 +307,12 @@ public class ShowbizProfileActivity extends AppCompatActivity {
     }
 
     public void displayAlbum() {
-        Album album = (Album) showbiz;
+        final Album album = (Album) showbiz;
 
         TextView tvName = (TextView) findViewById(R.id.tvName);
         TextView tvGenre = (TextView) findViewById(R.id.tvGenre);
+        TextView tvOwner = (TextView) findViewById(R.id.tvOwner);
+        TextView tvLabelOwner = (TextView) findViewById(R.id.tvLabelOwner);
         TextView tvSongsCount = (TextView) findViewById(R.id.tvSongsCount);
         TextView tvLabelSongs = (TextView) findViewById(R.id.tvLabelSongs);
         TextView tvRespectsCount = (TextView) findViewById(R.id.tvRespectsCount);
@@ -316,6 +321,11 @@ public class ShowbizProfileActivity extends AppCompatActivity {
 
         tvName.setText(album.getName());
         tvGenre.setText(album.getGenreName());
+
+        if(album.getOwner() != null) {
+            tvLabelOwner.setText(album.getOwner().getShowbizType());
+            tvOwner.setText(album.getOwner().getName());
+        }
 
         tvSongsCount.setText(String.valueOf(0));
         if (album.getSongs() != null) {
@@ -335,21 +345,36 @@ public class ShowbizProfileActivity extends AppCompatActivity {
         if(album.getSongs() != null && album.getSongs().size() > 0) {
             setupSongMembers(album.getSongs(), "Songs");
         }
+
+        // click listeners
+        if(album.getOwner() != null) {
+            tvOwner.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View view) {
+                    launchShowbizProfile(album.getOwner());
+                }
+            });
+        }
     }
 
     public void displaySong() {
-        Song song = (Song) showbiz;
+        final Song song = (Song) showbiz;
 
         TextView tvName = (TextView) findViewById(R.id.tvName);
         TextView tvGenre = (TextView) findViewById(R.id.tvGenre);
-        TextView tvSongsCount = (TextView) findViewById(R.id.tvSongsCount);
-        TextView tvLabelSongs = (TextView) findViewById(R.id.tvLabelSongs);
+        TextView tvOwner = (TextView) findViewById(R.id.tvOwner);
+        TextView tvLabelOwner = (TextView) findViewById(R.id.tvLabelOwner);
         TextView tvRespectsCount = (TextView) findViewById(R.id.tvRespectsCount);
         TextView tvYear = (TextView) findViewById(R.id.tvYear);
         ImageView ivProfile = (ImageView) findViewById(R.id.ivProfile);
 
         tvName.setText(song.getName());
         tvGenre.setText(song.getGenreName());
+
+        if(song.getOwner() != null) {
+            tvLabelOwner.setText(song.getOwner().getShowbizType());
+            tvOwner.setText(song.getOwner().getName());
+        }
 
         tvRespectsCount.setText(String.valueOf(song.getRespects()));
         tvYear.setText(String.valueOf(song.getYear()));
@@ -366,6 +391,16 @@ public class ShowbizProfileActivity extends AppCompatActivity {
         ArrayList<Song> songs = new ArrayList<>();
         songs.add(song);
         setupSongMembers(songs, "Song");
+
+        // click listeners
+        if(song.getOwner() != null) {
+            tvOwner.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View view) {
+                    launchShowbizProfile(song.getOwner());
+                }
+            });
+        }
     }
 
     public void setupMusicianMembers(ArrayList<Musician> musicians, String title) {
@@ -407,5 +442,11 @@ public class ShowbizProfileActivity extends AppCompatActivity {
         FragmentTransaction ftSong = getSupportFragmentManager().beginTransaction();
         ftSong.replace(R.id.flFeaturingSongs, fgSong);
         ftSong.commit();
+    }
+
+    public void launchShowbizProfile(Showbiz showbiz) {
+        Intent i = new Intent(this, ShowbizProfileActivity.class);
+        i.putExtra("showbiz", showbiz);
+        startActivity(i);
     }
 }

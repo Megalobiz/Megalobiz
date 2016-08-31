@@ -225,7 +225,7 @@ public class ShowbizMembersFragment extends Fragment {
                 .into(imageView);
 
         // create on click listener
-        imageView.setOnClickListener(new View.OnClickListener(){
+        v.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
                 launchShowbizProfile(showbiz);
@@ -297,6 +297,13 @@ public class ShowbizMembersFragment extends Fragment {
 
         // create album on click listener
         imageView.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                launchShowbizProfile(showbiz);
+            }
+        });
+
+        tvName.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
                 launchShowbizProfile(showbiz);
