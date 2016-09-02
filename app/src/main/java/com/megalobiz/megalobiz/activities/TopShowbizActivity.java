@@ -144,7 +144,7 @@ public class TopShowbizActivity extends AppCompatActivity {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 try {
                     if(response.getBoolean("error")) {
-                        Log.d("DEBUG", response.getString("mesage"));
+                        Log.d("DEBUG", response.getString("message"));
                         Toast.makeText(TopShowbizActivity.this,
                                 "Error: " + response.getString("message"), Toast.LENGTH_LONG).show();
                     } else {
@@ -223,7 +223,7 @@ public class TopShowbizActivity extends AppCompatActivity {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 try {
                     if(response.getBoolean("error")) {
-                        Log.d("DEBUG", response.getString("mesage"));
+                        Log.d("DEBUG", response.getString("message"));
                         Toast.makeText(TopShowbizActivity.this,
                                 "Error: " + response.getString("message"), Toast.LENGTH_LONG).show();
                     } else {

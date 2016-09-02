@@ -4,6 +4,7 @@ import com.megalobiz.megalobiz.MegalobizApi;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class Showbiz implements Serializable{
     protected String wallFilename;
     protected int respects;
     protected String genreName;
+    protected Boolean isRespected;
 
     public String getShowbizType() {
         return showbizType;
@@ -78,8 +80,38 @@ public class Showbiz implements Serializable{
         return respects;
     }
 
+    public void incrementRespects() {
+        this.respects++;
+    }
+
+    public void decrementRespects() {
+        this.respects--;
+    }
+
     public String getGenreName() {
         return genreName;
+    }
+
+    public Boolean getRespected() {
+        return isRespected;
+    }
+
+    public void setRespected(Boolean respected) {
+        isRespected = respected;
+    }
+
+    // for common attributes
+    public static Showbiz fromJSON(JSONObject json, Showbiz showbiz) {
+        try {
+            if(json.has("is_respected")) {
+                showbiz.isRespected = json.getBoolean("is_respected");
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return showbiz;
     }
 
     // For Mixed Models like in Search

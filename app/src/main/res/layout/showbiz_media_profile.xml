@@ -109,8 +109,8 @@
                 android:layout_alignTop="@+id/tvLabelOwner" />
 
             <ImageView
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:id="@+id/ivRespect"
                 android:src="@drawable/mb_icon_unrespected"
                 android:layout_above="@+id/tvRespectState"
@@ -129,7 +129,8 @@
                 android:textStyle="bold"
                 android:layout_alignTop="@+id/ivRespect"
                 android:layout_toRightOf="@+id/ivRespect"
-                android:layout_marginTop="-7dp" />
+                android:layout_marginTop="-10dp"
+                android:layout_marginLeft="5dp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -138,7 +139,7 @@
                 android:id="@+id/tvRespectState"
                 android:maxLength="24"
                 android:maxLines="2"
-                android:textColor="#158EC6"
+                android:textColor="#222222"
                 android:textSize="10sp"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true" />

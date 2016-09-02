@@ -48,16 +48,20 @@ public class Album extends Showbiz {
         Album album = new Album();
 
         try {
+            album = (Album) Showbiz.fromJSON(json, album);
+
             album.id = json.getInt("album_id");
             album.name = json.getString("album_name");
             album.year = json.getInt("theyear");
             album.respects = json.getInt("respects");
 
             // pictures
-            // get profile basepath
-            album.profileBasepath = json.getJSONObject("pictures").getJSONObject("profile").getString("base_path");
-            // get profile path
-            album.profileFilename = json.getJSONObject("pictures").getJSONObject("profile").getString("path");
+            if(json.has("pictures")) {
+                // get profile basepath
+                album.profileBasepath = json.getJSONObject("pictures").getJSONObject("profile").getString("base_path");
+                // get profile path
+                album.profileFilename = json.getJSONObject("pictures").getJSONObject("profile").getString("path");
+            }
 
             // Genre Name
             // Genre Name
