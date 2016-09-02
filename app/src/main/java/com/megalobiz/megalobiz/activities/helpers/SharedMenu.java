@@ -80,6 +80,9 @@ public class SharedMenu {
     public static void logout() {
         MegalobizClient client = MegalobizApplication.getRestClient();
         client.clearAccessToken();
+        // clear any Auth User
+        Auth.clear();
+        
         Intent i = new Intent(menuContext, LoginActivity.class);
         menuContext.startActivity(i);
     }

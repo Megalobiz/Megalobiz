@@ -68,7 +68,7 @@ public class SearchActivity extends AppCompatActivity {
         aShowbiz = new ShowbizArrayAdapter(this, showbizs, true);
         gvShowbiz.setAdapter(aShowbiz);
 
-        // Check Network and Internet, close Activity if no internet
+        // check Network and Internet, close Activity if no internet
         NetworkState nt = new NetworkState(this);
         nt.closeIfNoConnection();
 

@@ -54,7 +54,7 @@ public class NetworkState {
     public void closeIfNoConnection() {
         if (! isNetworkAvailable() || !isOnline()) {
 
-            Toast.makeText(activity, "Please Check your Internet Connection!", Toast.LENGTH_LONG).show();
+            Toast.makeText(activity, "Please check your Internet Connection!", Toast.LENGTH_LONG).show();
 
             // end this activity after a while
             new Handler().postDelayed(new Runnable() {

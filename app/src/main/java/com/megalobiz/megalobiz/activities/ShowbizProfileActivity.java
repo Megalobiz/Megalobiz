@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +19,7 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import com.megalobiz.megalobiz.MegalobizApplication;
 import com.megalobiz.megalobiz.MegalobizClient;
 import com.megalobiz.megalobiz.R;
+import com.megalobiz.megalobiz.activities.helpers.Auth;
 import com.megalobiz.megalobiz.activities.helpers.SharedHamburger;
 import com.megalobiz.megalobiz.activities.helpers.SharedMenu;
 import com.megalobiz.megalobiz.fragments.ShowbizMembersFragment;
@@ -29,16 +31,13 @@ import com.megalobiz.megalobiz.models.Showbiz;
 import com.megalobiz.megalobiz.models.Song;
 import com.megalobiz.megalobiz.utils.NetworkState;
 import com.nineoldandroids.animation.AnimatorSet;
-import com.nineoldandroids.animation.ArgbEvaluator;
 import com.nineoldandroids.animation.ObjectAnimator;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
@@ -51,6 +50,7 @@ public class ShowbizProfileActivity extends AppCompatActivity {
 
     private Boolean firstRun = true;
     private int resourceTitle;
+    private int backupMyRating;
 
     //Views attributes
 
@@ -105,7 +105,7 @@ public class ShowbizProfileActivity extends AppCompatActivity {
 
         // prepare the view objects
 
-        // Check Network and Internet, close Activity if no internet
+        // check Network and Internet, close Activity if no internet
         NetworkState nt = new NetworkState(this);
         nt.closeIfNoConnection();
 
@@ -259,7 +259,9 @@ public class ShowbizProfileActivity extends AppCompatActivity {
         }
 
         // click listeners
-        setupRespectListener();
+        if(Auth.check()) {
+            setupRespectListener();
+        }
     }
 
     public void displayMusician() {
@@ -314,7 +316,9 @@ public class ShowbizProfileActivity extends AppCompatActivity {
         }
 
         // click listeners
-        setupRespectListener();
+        if(Auth.check()) {
+            setupRespectListener();
+        }
     }
 
     public void displayAlbum() {
@@ -329,6 +333,8 @@ public class ShowbizProfileActivity extends AppCompatActivity {
         TextView tvRespectsCount = (TextView) findViewById(R.id.tvRespectsCount);
         TextView tvYear = (TextView) findViewById(R.id.tvYear);
         ImageView ivProfile = (ImageView) findViewById(R.id.ivProfile);
+        TextView tvRating = (TextView) findViewById(R.id.tvRating);
+        RatingBar rbRating = (RatingBar) findViewById(R.id.rbRating);
 
         tvName.setText(album.getName());
         tvGenre.setText(album.getGenreName());
@@ -347,6 +353,12 @@ public class ShowbizProfileActivity extends AppCompatActivity {
 
         tvRespectsCount.setText(String.valueOf(album.getRespects()));
         tvYear.setText(String.valueOf(album.getYear()));
+
+        // rating
+        tvRating.setText(String.format("%.1f", album.getRating()));
+        rbRating.setRating(album.getRating());
+        rbRating.setScaleX(1.5f);
+        rbRating.setScaleY(1.5f);
 
         // load profile image
         String profileUrl = album.getSmallProfilePicture();
@@ -367,7 +379,9 @@ public class ShowbizProfileActivity extends AppCompatActivity {
             });
         }
 
-        setupRespectListener();
+        if(Auth.check()) {
+            setupRespectListener();
+        }
     }
 
     public void displaySong() {
@@ -380,6 +394,11 @@ public class ShowbizProfileActivity extends AppCompatActivity {
         TextView tvRespectsCount = (TextView) findViewById(R.id.tvRespectsCount);
         TextView tvYear = (TextView) findViewById(R.id.tvYear);
         ImageView ivProfile = (ImageView) findViewById(R.id.ivProfile);
+        TextView tvRating = (TextView) findViewById(R.id.tvRating);
+        RatingBar rbRating = (RatingBar) findViewById(R.id.rbRating);
+        TextView tvTotalVotes = (TextView) findViewById(R.id.tvTotalVotes);
+        TextView tvMyVote = (TextView) findViewById(R.id.tvMyVote);
+        RatingBar rbMyRating = (RatingBar) findViewById(R.id.rbMyRating);
 
         tvName.setText(song.getName());
         tvGenre.setText(song.getGenreName());
@@ -391,6 +410,26 @@ public class ShowbizProfileActivity extends AppCompatActivity {
 
         tvRespectsCount.setText(String.valueOf(song.getRespects()));
         tvYear.setText(String.valueOf(song.getYear()));
+
+        // rating
+        tvRating.setText(String.format("%.1f", song.getRating()));
+        rbRating.setRating(song.getRating());
+        rbRating.setScaleX(1.5f);
+        rbRating.setScaleY(1.5f);
+        if(song.getRateCount() == 0) {
+            tvTotalVotes.setText(R.string.no_vote_yet);
+        } else {
+            tvTotalVotes.setText(String.format("%d votes", song.getRateCount()));
+        }
+
+        tvTotalVotes.setVisibility(View.VISIBLE);
+
+        // my rating only for Authenticated User
+        if(Auth.check()) {
+            rbMyRating.setRating(song.getMyRating());
+            rbMyRating.setVisibility(View.VISIBLE);
+            tvMyVote.setVisibility(View.VISIBLE);
+        }
 
         // load profile image
         String profileUrl = song.getSmallProfilePicture();
@@ -416,7 +455,10 @@ public class ShowbizProfileActivity extends AppCompatActivity {
         }
 
         // click listeners
-        setupRespectListener();
+        if(Auth.check()) {
+            setupRespectListener();
+            setupRatingListener();
+        }
     }
 
     public void setupMusicianMembers(ArrayList<Musician> musicians, String title) {
@@ -615,5 +657,64 @@ public class ShowbizProfileActivity extends AppCompatActivity {
         tvRespectState.setTextColor(Color.parseColor("#222222"));
         showbiz.decrementRespects();
         tvRespectsCount.setText(String.valueOf(showbiz.getRespects()));
+    }
+
+    public void setupRatingListener() {
+        Song song = (Song) showbiz;
+        // set backup rating
+        backupMyRating = song.getMyRating();
+
+        final RatingBar rbMyRating = (RatingBar) findViewById(R.id.rbMyRating);
+
+        rbMyRating.setScaleX(1.5f);
+        rbMyRating.setScaleY(1.5f);
+
+        rbMyRating.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
+                //Toast.makeText(ShowbizProfileActivity.this, "Rated: "+ String.valueOf(rbMyRating.getRating()), Toast.LENGTH_SHORT).show();
+                setRating((int) rbMyRating.getRating());
+            }
+        });
+    }
+
+    public void setRating(final int rating) {
+        final RatingBar rbMyRating = (RatingBar) findViewById(R.id.rbMyRating);
+        //if error is true or failure we set backupMyRating to reset
+        client.rateShowbiz(showbiz, rating, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                try {
+                    if(response.getBoolean("error")) {
+                        Log.d("DEBUG", response.getString("message"));
+                        Toast.makeText(ShowbizProfileActivity.this,
+                                "Error: " + response.getString("message"), Toast.LENGTH_LONG).show();
+                        rbMyRating.setRating(backupMyRating);
+                    } else {
+                        backupMyRating = rating;
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    rbMyRating.setRating(backupMyRating);
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+                rbMyRating.setRating(backupMyRating);
+                Toast.makeText(ShowbizProfileActivity.this, "Error: " + throwable.getMessage(), Toast.LENGTH_LONG).show();
+                Log.d("DEBUG", errorResponse.toString());
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
+                rbMyRating.setRating(backupMyRating);
+                Toast.makeText(ShowbizProfileActivity.this, "Error: " + throwable.getMessage(), Toast.LENGTH_LONG).show();
+                Log.d("DEBUG", throwable.getMessage());
+            }
+        });
     }
 }
