@@ -218,7 +218,10 @@
             android:secondaryProgressTint="#777777"
             android:isIndicator="true"
             style="?android:attr/ratingBarStyleSmall"
-            android:layout_marginRight="5dp" />
+            android:layout_marginRight="20dp"
+            android:minHeight="24dp"
+            android:maxHeight="24dp"
+            android:layout_marginLeft="20dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -227,10 +230,10 @@
             android:id="@+id/tvRating"
             android:textColor="#158EC6"
             android:textStyle="bold"
-            android:layout_alignBottom="@+id/rbRating"
+            android:textSize="14dp"
+            android:layout_alignTop="@+id/rbRating"
             android:layout_toRightOf="@+id/rbRating"
-            android:layout_toEndOf="@+id/rbRating"
-            android:textSize="14dp" />
+            android:layout_toEndOf="@+id/rbRating" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -238,10 +241,11 @@
             android:text="@string/number_of_votes"
             android:id="@+id/tvTotalVotes"
             android:layout_below="@+id/rbRating"
-            android:layout_alignLeft="@+id/rbRating"
-            android:layout_alignStart="@+id/rbRating"
+            android:layout_alignLeft="@+id/ivProfile"
+            android:layout_alignStart="@+id/ivProfile"
             android:textSize="12sp"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:layout_marginTop="-5dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -250,13 +254,15 @@
             android:id="@+id/tvMyVote"
             android:textSize="12sp"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
+            android:layout_alignParentStart="false"
             android:layout_marginRight="5dp"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"
             android:visibility="gone"
             android:layout_below="@+id/tvTotalVotes"
-            android:layout_alignLeft="@+id/tvTotalVotes" />
+            android:layout_alignLeft="@+id/tvTotalVotes"
+            android:layout_alignParentEnd="false"
+            android:textColor="#158EC6" />
 
         <RatingBar
             style="?android:attr/ratingBarStyleSmall"
@@ -268,12 +274,16 @@
             android:numStars="5"
             android:stepSize="1"
             android:secondaryProgressTint="#777777"
-            android:isIndicator="true"
+            android:isIndicator="false"
             android:rating="0"
-            android:layout_alignBottom="@+id/tvMyVote"
-            android:layout_toRightOf="@+id/tvMyVote"
-            android:layout_toEndOf="@+id/tvMyVote"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:maxHeight="24dp"
+            android:minHeight="24dp"
+            android:layout_alignLeft="@+id/tvMyVote"
+            android:layout_alignStart="@+id/tvMyVote"
+            android:layout_below="@+id/tvMyVote"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="7dp" />
 
     </RelativeLayout>
 

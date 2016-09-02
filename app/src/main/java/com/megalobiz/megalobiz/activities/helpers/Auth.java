@@ -1,5 +1,8 @@
 package com.megalobiz.megalobiz.activities.helpers;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 import com.megalobiz.megalobiz.models.User;
 
 /**
@@ -19,18 +22,26 @@ public class Auth {
     }
 
     /**
-     *  Check if a User is Authenticated
+     *  check if a User is Authenticated
      *  @return boolean
      */
-    public static boolean Check() {
+    public static boolean check() {
         return user != null;
     }
 
     /**
-     *  Check if User is a guest
+     *  check if User is a guest
      *  @return boolean
      */
-    public static boolean Guest() {
+    public static boolean guest() {
         return user == null;
+    }
+
+    /**
+     *  Clear any auth user
+     *
+     */
+    public static void clear() {
+        user = null;
     }
 }

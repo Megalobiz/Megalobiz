@@ -31,16 +31,13 @@ import com.megalobiz.megalobiz.models.Showbiz;
 import com.megalobiz.megalobiz.models.Song;
 import com.megalobiz.megalobiz.utils.NetworkState;
 import com.nineoldandroids.animation.AnimatorSet;
-import com.nineoldandroids.animation.ArgbEvaluator;
 import com.nineoldandroids.animation.ObjectAnimator;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
@@ -53,6 +50,7 @@ public class ShowbizProfileActivity extends AppCompatActivity {
 
     private Boolean firstRun = true;
     private int resourceTitle;
+    private int backupMyRating;
 
     //Views attributes
 
@@ -107,7 +105,7 @@ public class ShowbizProfileActivity extends AppCompatActivity {
 
         // prepare the view objects
 
-        // Check Network and Internet, close Activity if no internet
+        // check Network and Internet, close Activity if no internet
         NetworkState nt = new NetworkState(this);
         nt.closeIfNoConnection();
 
@@ -261,7 +259,7 @@ public class ShowbizProfileActivity extends AppCompatActivity {
         }
 
         // click listeners
-        if(Auth.Check()) {
+        if(Auth.check()) {
             setupRespectListener();
         }
     }
@@ -318,7 +316,7 @@ public class ShowbizProfileActivity extends AppCompatActivity {
         }
 
         // click listeners
-        if(Auth.Check()) {
+        if(Auth.check()) {
             setupRespectListener();
         }
     }
@@ -359,6 +357,8 @@ public class ShowbizProfileActivity extends AppCompatActivity {
         // rating
         tvRating.setText(String.format("%.1f", album.getRating()));
         rbRating.setRating(album.getRating());
+        rbRating.setScaleX(1.5f);
+        rbRating.setScaleY(1.5f);
 
         // load profile image
         String profileUrl = album.getSmallProfilePicture();
@@ -379,7 +379,7 @@ public class ShowbizProfileActivity extends AppCompatActivity {
             });
         }
 
-        if(Auth.Check()) {
+        if(Auth.check()) {
             setupRespectListener();
         }
     }
@@ -414,13 +414,22 @@ public class ShowbizProfileActivity extends AppCompatActivity {
         // rating
         tvRating.setText(String.format("%.1f", song.getRating()));
         rbRating.setRating(song.getRating());
-        tvTotalVotes.setText(String.format("%d votes", song.getTotalNote()));
+        rbRating.setScaleX(1.5f);
+        rbRating.setScaleY(1.5f);
+        if(song.getRateCount() == 0) {
+            tvTotalVotes.setText(R.string.no_vote_yet);
+        } else {
+            tvTotalVotes.setText(String.format("%d votes", song.getRateCount()));
+        }
+
         tvTotalVotes.setVisibility(View.VISIBLE);
 
-        // my rating
-        rbMyRating.setRating(song.getMyRating());
-        rbMyRating.setVisibility(View.VISIBLE);
-        tvMyVote.setVisibility(View.VISIBLE);
+        // my rating only for Authenticated User
+        if(Auth.check()) {
+            rbMyRating.setRating(song.getMyRating());
+            rbMyRating.setVisibility(View.VISIBLE);
+            tvMyVote.setVisibility(View.VISIBLE);
+        }
 
         // load profile image
         String profileUrl = song.getSmallProfilePicture();
@@ -446,8 +455,9 @@ public class ShowbizProfileActivity extends AppCompatActivity {
         }
 
         // click listeners
-        if(Auth.Check()) {
+        if(Auth.check()) {
             setupRespectListener();
+            setupRatingListener();
         }
     }
 
@@ -647,5 +657,64 @@ public class ShowbizProfileActivity extends AppCompatActivity {
         tvRespectState.setTextColor(Color.parseColor("#222222"));
         showbiz.decrementRespects();
         tvRespectsCount.setText(String.valueOf(showbiz.getRespects()));
+    }
+
+    public void setupRatingListener() {
+        Song song = (Song) showbiz;
+        // set backup rating
+        backupMyRating = song.getMyRating();
+
+        final RatingBar rbMyRating = (RatingBar) findViewById(R.id.rbMyRating);
+
+        rbMyRating.setScaleX(1.5f);
+        rbMyRating.setScaleY(1.5f);
+
+        rbMyRating.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
+                //Toast.makeText(ShowbizProfileActivity.this, "Rated: "+ String.valueOf(rbMyRating.getRating()), Toast.LENGTH_SHORT).show();
+                setRating((int) rbMyRating.getRating());
+            }
+        });
+    }
+
+    public void setRating(final int rating) {
+        final RatingBar rbMyRating = (RatingBar) findViewById(R.id.rbMyRating);
+        //if error is true or failure we set backupMyRating to reset
+        client.rateShowbiz(showbiz, rating, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                try {
+                    if(response.getBoolean("error")) {
+                        Log.d("DEBUG", response.getString("message"));
+                        Toast.makeText(ShowbizProfileActivity.this,
+                                "Error: " + response.getString("message"), Toast.LENGTH_LONG).show();
+                        rbMyRating.setRating(backupMyRating);
+                    } else {
+                        backupMyRating = rating;
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    rbMyRating.setRating(backupMyRating);
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+                rbMyRating.setRating(backupMyRating);
+                Toast.makeText(ShowbizProfileActivity.this, "Error: " + throwable.getMessage(), Toast.LENGTH_LONG).show();
+                Log.d("DEBUG", errorResponse.toString());
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
+                rbMyRating.setRating(backupMyRating);
+                Toast.makeText(ShowbizProfileActivity.this, "Error: " + throwable.getMessage(), Toast.LENGTH_LONG).show();
+                Log.d("DEBUG", throwable.getMessage());
+            }
+        });
     }
 }

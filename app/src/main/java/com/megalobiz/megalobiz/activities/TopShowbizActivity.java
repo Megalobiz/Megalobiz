@@ -80,7 +80,7 @@ public class TopShowbizActivity extends AppCompatActivity {
                     "Token is there :"+ client.checkAccessToken().getToken().subSequence(1, 5), Toast.LENGTH_LONG).show();
         }*/
 
-        // Check Network and Internet before proceeding
+        // check Network and Internet before proceeding
         NetworkState nt = new NetworkState(this);
         if (nt.isNetworkAvailable() && NetworkState.isOnline()) {
             // start
@@ -92,7 +92,7 @@ public class TopShowbizActivity extends AppCompatActivity {
             }
 
         } else {
-            Toast.makeText(this, "Please Check your Internet Connection!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Please check your Internet Connection!", Toast.LENGTH_LONG).show();
         }
     }
 

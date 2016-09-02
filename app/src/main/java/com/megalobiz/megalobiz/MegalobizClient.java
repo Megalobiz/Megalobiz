@@ -143,13 +143,28 @@ public class MegalobizClient extends OAuthBaseClient {
         // make the uri
         String apiUrl = getApiUrl("user/entity/unrespect");
 
-        //getClient().addHeader("Content-Type", "application/x-www-form-urlencoded");
+        // Can specify query string params directly or through RequestParams.
+        RequestParams params = new RequestParams();
+        params.put("access_token", client.getAccessToken().getToken());
+        params.put("Entity", showbiz.getShowbizType());
+        params.put("EntityId", showbiz.getId());
+
+        client.post(apiUrl, params, handler);
+    }
+
+    // post unrespect Showbiz
+    // ex: http://megalobiz.com/api/v1/user/entity/respect
+    // params Entity = Band, EntityId = 1000
+    public void rateShowbiz(Showbiz showbiz, int rating, AsyncHttpResponseHandler handler) {
+        // make the uri
+        String apiUrl = getApiUrl("user/entity/rate");
 
         // Can specify query string params directly or through RequestParams.
         RequestParams params = new RequestParams();
         params.put("access_token", client.getAccessToken().getToken());
         params.put("Entity", showbiz.getShowbizType());
         params.put("EntityId", showbiz.getId());
+        params.put("rating", rating);
 
         client.post(apiUrl, params, handler);
     }
