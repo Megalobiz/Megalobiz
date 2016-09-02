@@ -63,7 +63,11 @@ public class Album extends Showbiz {
                 album.profileFilename = json.getJSONObject("pictures").getJSONObject("profile").getString("path");
             }
 
-            // Genre Name
+            // rating
+            if(json.has("rating") && !json.isNull("rating")) {
+                album.rating = (float) json.getDouble("rating");
+            }
+
             // Genre Name
             if(json.has("music_genre")) {
                 album.genreName = json.getJSONObject("music_genre").getString("genre_name");

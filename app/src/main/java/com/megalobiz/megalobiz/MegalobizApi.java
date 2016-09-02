@@ -17,7 +17,7 @@ import org.scribe.oauth.OAuthService;
 
 public class MegalobizApi extends DefaultApi20
 {
-    public static final String HOST = "http://192.168.1.101";
+    public static final String HOST = "http://192.168.37.52";
 
     private static final String AUTHORIZATION_URL =
             HOST + "/oauth/authorize?client_id=%s&redirect_uri=%s&response_type=code";

@@ -18,6 +18,7 @@ public class Song extends Showbiz {
     private int year;
     private int totalNote;
     private int rateCount;
+    private int myRating;
     private String fullPath;
     private int length;
 
@@ -44,6 +45,10 @@ public class Song extends Showbiz {
         return totalNote;
     }
 
+    public int getMyRating() {
+        return myRating;
+    }
+
     public int getTrack() {
         return track;
     }
@@ -54,6 +59,14 @@ public class Song extends Showbiz {
 
     public String getFullPath() {
         return String.format("%s%s", MegalobizApi.HOST, fullPath);
+    }
+
+    public float getRating() {
+        if(rateCount > 0) {
+            return ((float)totalNote / rateCount);
+        }
+
+        return 0f;
     }
 
     public Song() {
@@ -76,6 +89,9 @@ public class Song extends Showbiz {
             song.totalNote = json.getInt("total_note");
             song.rateCount = json.getInt("rate_count");
             song.respects = json.getInt("respects");
+            if(json.has("my_rating") && !json.isNull("my_rating")) {
+                song.myRating = json.getInt("my_rating");
+            }
 
             song.fullPath = json.getString("full_path");
 

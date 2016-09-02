@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +19,7 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import com.megalobiz.megalobiz.MegalobizApplication;
 import com.megalobiz.megalobiz.MegalobizClient;
 import com.megalobiz.megalobiz.R;
+import com.megalobiz.megalobiz.activities.helpers.Auth;
 import com.megalobiz.megalobiz.activities.helpers.SharedHamburger;
 import com.megalobiz.megalobiz.activities.helpers.SharedMenu;
 import com.megalobiz.megalobiz.fragments.ShowbizMembersFragment;
@@ -259,7 +261,9 @@ public class ShowbizProfileActivity extends AppCompatActivity {
         }
 
         // click listeners
-        setupRespectListener();
+        if(Auth.Check()) {
+            setupRespectListener();
+        }
     }
 
     public void displayMusician() {
@@ -314,7 +318,9 @@ public class ShowbizProfileActivity extends AppCompatActivity {
         }
 
         // click listeners
-        setupRespectListener();
+        if(Auth.Check()) {
+            setupRespectListener();
+        }
     }
 
     public void displayAlbum() {
@@ -329,6 +335,8 @@ public class ShowbizProfileActivity extends AppCompatActivity {
         TextView tvRespectsCount = (TextView) findViewById(R.id.tvRespectsCount);
         TextView tvYear = (TextView) findViewById(R.id.tvYear);
         ImageView ivProfile = (ImageView) findViewById(R.id.ivProfile);
+        TextView tvRating = (TextView) findViewById(R.id.tvRating);
+        RatingBar rbRating = (RatingBar) findViewById(R.id.rbRating);
 
         tvName.setText(album.getName());
         tvGenre.setText(album.getGenreName());
@@ -347,6 +355,10 @@ public class ShowbizProfileActivity extends AppCompatActivity {
 
         tvRespectsCount.setText(String.valueOf(album.getRespects()));
         tvYear.setText(String.valueOf(album.getYear()));
+
+        // rating
+        tvRating.setText(String.format("%.1f", album.getRating()));
+        rbRating.setRating(album.getRating());
 
         // load profile image
         String profileUrl = album.getSmallProfilePicture();
@@ -367,7 +379,9 @@ public class ShowbizProfileActivity extends AppCompatActivity {
             });
         }
 
-        setupRespectListener();
+        if(Auth.Check()) {
+            setupRespectListener();
+        }
     }
 
     public void displaySong() {
@@ -380,6 +394,11 @@ public class ShowbizProfileActivity extends AppCompatActivity {
         TextView tvRespectsCount = (TextView) findViewById(R.id.tvRespectsCount);
         TextView tvYear = (TextView) findViewById(R.id.tvYear);
         ImageView ivProfile = (ImageView) findViewById(R.id.ivProfile);
+        TextView tvRating = (TextView) findViewById(R.id.tvRating);
+        RatingBar rbRating = (RatingBar) findViewById(R.id.rbRating);
+        TextView tvTotalVotes = (TextView) findViewById(R.id.tvTotalVotes);
+        TextView tvMyVote = (TextView) findViewById(R.id.tvMyVote);
+        RatingBar rbMyRating = (RatingBar) findViewById(R.id.rbMyRating);
 
         tvName.setText(song.getName());
         tvGenre.setText(song.getGenreName());
@@ -391,6 +410,17 @@ public class ShowbizProfileActivity extends AppCompatActivity {
 
         tvRespectsCount.setText(String.valueOf(song.getRespects()));
         tvYear.setText(String.valueOf(song.getYear()));
+
+        // rating
+        tvRating.setText(String.format("%.1f", song.getRating()));
+        rbRating.setRating(song.getRating());
+        tvTotalVotes.setText(String.format("%d votes", song.getTotalNote()));
+        tvTotalVotes.setVisibility(View.VISIBLE);
+
+        // my rating
+        rbMyRating.setRating(song.getMyRating());
+        rbMyRating.setVisibility(View.VISIBLE);
+        tvMyVote.setVisibility(View.VISIBLE);
 
         // load profile image
         String profileUrl = song.getSmallProfilePicture();
@@ -416,7 +446,9 @@ public class ShowbizProfileActivity extends AppCompatActivity {
         }
 
         // click listeners
-        setupRespectListener();
+        if(Auth.Check()) {
+            setupRespectListener();
+        }
     }
 
     public void setupMusicianMembers(ArrayList<Musician> musicians, String title) {

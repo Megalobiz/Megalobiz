@@ -17,4 +17,20 @@ public class Auth {
     public static void setUser(User user) {
         Auth.user = user;
     }
+
+    /**
+     *  Check if a User is Authenticated
+     *  @return boolean
+     */
+    public static boolean Check() {
+        return user != null;
+    }
+
+    /**
+     *  Check if User is a guest
+     *  @return boolean
+     */
+    public static boolean Guest() {
+        return user == null;
+    }
 }
