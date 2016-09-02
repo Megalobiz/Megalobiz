@@ -80,7 +80,7 @@
             android:layout_alignLeft="@+id/tvBand"
             android:layout_alignStart="@+id/tvLabelBand"
             android:layout_alignParentStart="false"
-            android:layout_marginTop="5dp" />
+            android:layout_marginTop="10dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -153,8 +153,8 @@
             android:layout_toRightOf="@+id/tvLabelAlbums" />
 
         <ImageView
-            android:layout_width="35dp"
-            android:layout_height="35dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:id="@+id/ivRespect"
             android:layout_below="@+id/ivWall"
             android:layout_marginTop="10dp"
@@ -175,7 +175,8 @@
             android:textStyle="bold"
             android:layout_alignTop="@+id/ivRespect"
             android:layout_toRightOf="@+id/ivRespect"
-            android:layout_marginTop="-7dp" />
+            android:layout_marginTop="-10dp"
+            android:layout_marginLeft="5dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -184,12 +185,11 @@
             android:id="@+id/tvRespectState"
             android:maxLength="24"
             android:maxLines="2"
-            android:textColor="#158EC6"
+            android:textColor="#555555"
             android:textSize="10sp"
             android:layout_below="@+id/ivRespect"
             android:layout_alignLeft="@+id/ivRespect"
-            android:layout_alignStart="@+id/ivRespect"
-            android:layout_marginTop="-5dp" />
+            android:layout_alignStart="@+id/ivRespect" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -231,7 +231,7 @@
             android:layout_below="@+id/ivShowbizType"
             android:layout_toEndOf="@+id/ivShowbizType"
             android:layout_alignLeft="@+id/ivShowbizType"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="10dp"
             android:visibility="gone" />
 
         <TextView

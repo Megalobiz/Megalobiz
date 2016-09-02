@@ -50,19 +50,23 @@ public class Musician extends Showbiz {
         Musician musician = new Musician();
 
         try {
+            musician = (Musician) Showbiz.fromJSON(json, musician);
+
             musician.id = json.getInt("musician_id");
             musician.name = json.getString("musician_name");
             musician.respects = json.getInt("respects");
 
             // pictures
-            // get profile basepath
-            musician.profileBasepath = json.getJSONObject("pictures").getJSONObject("profile").getString("base_path");
-            // get profile path
-            musician.profileFilename = json.getJSONObject("pictures").getJSONObject("profile").getString("path");
-            // get wall basepath
-            musician.wallBasepath = json.getJSONObject("pictures").getJSONObject("wall").getString("base_path");
-            // get profile path
-            musician.wallFilename = json.getJSONObject("pictures").getJSONObject("wall").getString("path");
+            if(json.has("pictures")) {
+                // get profile basepath
+                musician.profileBasepath = json.getJSONObject("pictures").getJSONObject("profile").getString("base_path");
+                // get profile path
+                musician.profileFilename = json.getJSONObject("pictures").getJSONObject("profile").getString("path");
+                // get wall basepath
+                musician.wallBasepath = json.getJSONObject("pictures").getJSONObject("wall").getString("base_path");
+                // get profile path
+                musician.wallFilename = json.getJSONObject("pictures").getJSONObject("wall").getString("path");
+            }
 
             // Genre Name
             if(json.has("music_genre")) {

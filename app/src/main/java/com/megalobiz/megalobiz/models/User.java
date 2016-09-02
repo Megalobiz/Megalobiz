@@ -29,7 +29,8 @@ public class User extends Showbiz {
             user.firstName = json.getString("first_name");
             user.lastName = json.getString("last_name");
             user.name = user.firstName + " " + user.lastName;
-
+            user.gender = json.getString("gender");
+            user.email = json.getString("email");
 
             // pictures
             // get profile basepath
@@ -37,11 +38,8 @@ public class User extends Showbiz {
             // get profile path
             user.profileFilename = json.getJSONObject("pictures").getJSONObject("profile").getString("path");
 
-            // Collection Models
-            // Songs
-
             user.birthDate = new SimpleDateFormat("yyyy-MM-dd");
-            user.birthDate.parse(json.getString("birth_date"));
+            user.birthDate.parse(json.getString("birthdate"));
 
         } catch (JSONException | ParseException e) {
             e.printStackTrace();

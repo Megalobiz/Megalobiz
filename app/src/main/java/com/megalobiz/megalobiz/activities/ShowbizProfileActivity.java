@@ -1,6 +1,7 @@
 package com.megalobiz.megalobiz.activities;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -27,11 +28,15 @@ import com.megalobiz.megalobiz.models.Musician;
 import com.megalobiz.megalobiz.models.Showbiz;
 import com.megalobiz.megalobiz.models.Song;
 import com.megalobiz.megalobiz.utils.NetworkState;
+import com.nineoldandroids.animation.AnimatorSet;
+import com.nineoldandroids.animation.ArgbEvaluator;
+import com.nineoldandroids.animation.ObjectAnimator;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -157,7 +162,7 @@ public class ShowbizProfileActivity extends AppCompatActivity {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 try {
                     if(response.getBoolean("error")) {
-                        Log.d("DEBUG", response.getString("mesage"));
+                        Log.d("DEBUG", response.getString("message"));
                         Toast.makeText(ShowbizProfileActivity.this,
                                 "Error: " + response.getString("message"), Toast.LENGTH_LONG).show();
                     } else {
@@ -252,6 +257,9 @@ public class ShowbizProfileActivity extends AppCompatActivity {
         if(band.getSongs() != null && band.getSongs().size() > 0) {
             setupSongMembers(band.getSongs(), "Songs");
         }
+
+        // click listeners
+        setupRespectListener();
     }
 
     public void displayMusician() {
@@ -304,6 +312,9 @@ public class ShowbizProfileActivity extends AppCompatActivity {
         if(musician.getFeaturingSongs() != null && musician.getFeaturingSongs().size() > 0) {
             setupFeaturingSongMembers(musician.getFeaturingSongs(), "Featuring Songs");
         }
+
+        // click listeners
+        setupRespectListener();
     }
 
     public void displayAlbum() {
@@ -355,6 +366,8 @@ public class ShowbizProfileActivity extends AppCompatActivity {
                 }
             });
         }
+
+        setupRespectListener();
     }
 
     public void displaySong() {
@@ -401,6 +414,9 @@ public class ShowbizProfileActivity extends AppCompatActivity {
                 }
             });
         }
+
+        // click listeners
+        setupRespectListener();
     }
 
     public void setupMusicianMembers(ArrayList<Musician> musicians, String title) {
@@ -448,5 +464,156 @@ public class ShowbizProfileActivity extends AppCompatActivity {
         Intent i = new Intent(this, ShowbizProfileActivity.class);
         i.putExtra("showbiz", showbiz);
         startActivity(i);
+    }
+
+    public void setupRespectListener() {
+        ImageView ivRespect = (ImageView) findViewById(R.id.ivRespect);
+        TextView tvRespectState = (TextView) findViewById(R.id.tvRespectState);
+
+        if(showbiz.getRespected()) {
+            ivRespect.setImageResource(R.drawable.mb_icon_respected);
+            ivRespect.setScaleX(1.3f);
+            ivRespect.setScaleY(1.3f);
+            tvRespectState.setTextColor(Color.parseColor("#158EC6"));
+        }
+
+        ivRespect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Toast.makeText(ShowbizProfileActivity.this, "Respect", Toast.LENGTH_SHORT).show();
+                if(showbiz.getRespected()) {
+                    unrespect();
+                } else {
+                    respect();
+                }
+            }
+        });
+    }
+
+    public void respect() {
+        // set as respected before sending the request in background
+        setAsRespected();
+
+        //if error is true or failure we call setAsUnrespected to reset
+        client.respectShowbiz(showbiz, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                try {
+                    if(response.getBoolean("error")) {
+                        Log.d("DEBUG", response.getString("message"));
+                        Toast.makeText(ShowbizProfileActivity.this,
+                                "Error: " + response.getString("message"), Toast.LENGTH_LONG).show();
+                        setAsUnrespected();
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    setAsUnrespected();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+                setAsUnrespected();
+                Toast.makeText(ShowbizProfileActivity.this, "Error: " + throwable.getMessage(), Toast.LENGTH_LONG).show();
+                Log.d("DEBUG", errorResponse.toString());
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
+                setAsUnrespected();
+                Toast.makeText(ShowbizProfileActivity.this, "Error: " + throwable.getMessage(), Toast.LENGTH_LONG).show();
+                Log.d("DEBUG", throwable.getMessage());
+            }
+        });
+
+    }
+
+    public void unrespect() {
+        // set as respected before sending the request in background
+        setAsUnrespected();
+
+        //if error is true or failure we call setAsRespected to reset
+        client.unrespectShowbiz(showbiz, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                try {
+                    if(response.getBoolean("error")) {
+                        Log.d("DEBUG", response.getString("message"));
+                        Toast.makeText(ShowbizProfileActivity.this,
+                                "Error: " + response.getString("message"), Toast.LENGTH_LONG).show();
+                        setAsRespected();
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    setAsRespected();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+                setAsRespected();
+                Toast.makeText(ShowbizProfileActivity.this, "Error: " + throwable.getMessage(), Toast.LENGTH_LONG).show();
+                Log.d("DEBUG", errorResponse.toString());
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
+                setAsRespected();
+                Toast.makeText(ShowbizProfileActivity.this, "Error: " + throwable.getMessage(), Toast.LENGTH_LONG).show();
+                Log.d("DEBUG", throwable.getMessage());
+            }
+        });
+    }
+
+    public void setAsRespected() {
+        ImageView ivRespect = (ImageView) findViewById(R.id.ivRespect);
+        TextView tvRespectState = (TextView) findViewById(R.id.tvRespectState);
+        TextView tvRespectsCount = (TextView) findViewById(R.id.tvRespectsCount);
+
+        ivRespect.setImageResource(R.drawable.mb_icon_respected);
+        showbiz.setRespected(true);
+
+        int duration = 200;
+        ObjectAnimator fadeAnim = ObjectAnimator.ofFloat(ivRespect, "alpha", 0.1f, 1.0f).setDuration(duration);
+        ObjectAnimator scaleXAnim = ObjectAnimator.ofFloat(ivRespect, "scaleX", 1.0f, 1.3f).setDuration(duration);
+        ObjectAnimator scaleYAnim = ObjectAnimator.ofFloat(ivRespect, "scaleY", 1.0f, 1.3f).setDuration(duration);
+
+        AnimatorSet animSet = new AnimatorSet();
+        animSet.playTogether(fadeAnim, scaleXAnim, scaleYAnim);
+        animSet.start();
+
+        tvRespectState.setText(R.string.respected);
+        tvRespectState.setTextColor(Color.parseColor("#158EC6"));
+        showbiz.incrementRespects();
+        tvRespectsCount.setText(String.valueOf(showbiz.getRespects()));
+    }
+
+    public void setAsUnrespected() {
+        ImageView ivRespect = (ImageView) findViewById(R.id.ivRespect);
+        TextView tvRespectState = (TextView) findViewById(R.id.tvRespectState);
+        TextView tvRespectsCount = (TextView) findViewById(R.id.tvRespectsCount);
+
+        ivRespect.setImageResource(R.drawable.mb_icon_unrespected);
+        showbiz.setRespected(false);
+
+        int duration = 200;
+        ObjectAnimator fadeAnim = ObjectAnimator.ofFloat(ivRespect, "alpha", 0.1f, 1.0f).setDuration(duration);
+        ObjectAnimator scaleXAnim = ObjectAnimator.ofFloat(ivRespect, "scaleX", 1.3f, 1.0f).setDuration(duration);
+        ObjectAnimator scaleYAnim = ObjectAnimator.ofFloat(ivRespect, "scaleY", 1.3f, 1.0f).setDuration(duration);
+
+        AnimatorSet animSet = new AnimatorSet();
+        animSet.playTogether(fadeAnim, scaleXAnim, scaleYAnim);
+        animSet.start();
+
+        tvRespectState.setText(R.string.unrespected);
+        tvRespectState.setTextColor(Color.parseColor("#222222"));
+        showbiz.decrementRespects();
+        tvRespectsCount.setText(String.valueOf(showbiz.getRespects()));
     }
 }

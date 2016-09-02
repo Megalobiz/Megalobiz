@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Vector;
 
 /**
  * Created by KeitelRobespierre on 8/18/2016.
@@ -63,10 +64,14 @@ public class Song extends Showbiz {
         Song song = new Song();
 
         try {
+            song = (Song) Showbiz.fromJSON(json, song);
+
             song.id = json.getInt("song_id");
             song.name = json.getString("song_name");
             song.year = json.getInt("theyear");
-            song.track = json.getInt("track");
+            if(!json.isNull("track")) {
+                song.track = json.getInt("track");
+            }
             song.length = json.getInt("length");
             song.totalNote = json.getInt("total_note");
             song.rateCount = json.getInt("rate_count");
@@ -75,10 +80,12 @@ public class Song extends Showbiz {
             song.fullPath = json.getString("full_path");
 
             // pictures
-            // get profile basepath
-            song.profileBasepath = json.getJSONObject("pictures").getJSONObject("profile").getString("base_path");
-            // get profile path
-            song.profileFilename = json.getJSONObject("pictures").getJSONObject("profile").getString("path");
+            if(json.has("pictures")) {
+                // get profile basepath
+                song.profileBasepath = json.getJSONObject("pictures").getJSONObject("profile").getString("base_path");
+                // get profile path
+                song.profileFilename = json.getJSONObject("pictures").getJSONObject("profile").getString("path");
+            }
 
             // Genre Name
             // Genre Name

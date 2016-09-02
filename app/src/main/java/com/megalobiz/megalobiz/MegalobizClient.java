@@ -3,7 +3,9 @@ package com.megalobiz.megalobiz;
 import org.scribe.builder.api.Api;
 import org.scribe.builder.api.FlickrApi;
 import org.scribe.builder.api.TwitterApi;
+import org.scribe.model.OAuthRequest;
 import org.scribe.model.Token;
+import org.scribe.model.Verb;
 
 import android.content.Context;
 import android.net.Uri;
@@ -11,6 +13,7 @@ import android.net.Uri;
 import com.codepath.oauth.OAuthBaseClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.megalobiz.megalobiz.models.Showbiz;
 
 /**
  * Created by KeitelRobespierre on 8/13/2016.
@@ -112,6 +115,43 @@ public class MegalobizClient extends OAuthBaseClient {
         // make the uri
         String apiUrl = getApiUrl("user/auth/info");
         client.get(apiUrl, handler);
+    }
+
+    // post respect Showbiz
+    // ex: http://megalobiz.com/api/v1/user/entity/respect
+    // params Entity = Band, EntityId = 1000
+    public void respectShowbiz(Showbiz showbiz, AsyncHttpResponseHandler handler) {
+        // make the uri
+        String apiUrl = getApiUrl("user/entity/respect");
+
+        //OAuthRequest request = new OAuthRequest(Verb.POST, client.getAccessToken().getToken());
+        //client.addHeader("Content-Type", "application/x-www-form-urlencoded");
+
+        // Can specify query string params directly or through RequestParams.
+        RequestParams params = new RequestParams();
+        params.put("access_token", client.getAccessToken().getToken());
+        params.put("Entity", showbiz.getShowbizType());
+        params.put("EntityId", showbiz.getId());
+
+        client.post(apiUrl, params, handler);
+    }
+
+    // post unrespect Showbiz
+    // ex: http://megalobiz.com/api/v1/user/entity/respect
+    // params Entity = Band, EntityId = 1000
+    public void unrespectShowbiz(Showbiz showbiz, AsyncHttpResponseHandler handler) {
+        // make the uri
+        String apiUrl = getApiUrl("user/entity/unrespect");
+
+        //getClient().addHeader("Content-Type", "application/x-www-form-urlencoded");
+
+        // Can specify query string params directly or through RequestParams.
+        RequestParams params = new RequestParams();
+        params.put("access_token", client.getAccessToken().getToken());
+        params.put("Entity", showbiz.getShowbizType());
+        params.put("EntityId", showbiz.getId());
+
+        client.post(apiUrl, params, handler);
     }
 
 
