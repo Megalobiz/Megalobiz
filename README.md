@@ -52,13 +52,12 @@ Please click to see [WireFrame](http://htmlpreview.github.io/?https://github.com
 
 WireFrame created with [Pencil](http://pencil.evolus.vn).
 
-## 2 Video previews of the App
+## Video previews of the App
 
-### 1 Preview with GUEST and 1 Preview with Authenticated User:
+### 1- Preview with GUEST _____ 2- Preview with Authenticated User:
 
-<img src="https://github.com/Megalobiz/Megalobiz/blob/master/Megalobiz_Guest.gif" title="Video Preview with Guest" alt="Video Preview with Guest">
-
-<img src="https://github.com/Megalobiz/Megalobiz/blob/master/Megalobiz_AuthUser.gif" title="Video Preview with Authenticated User" alt="Video Preview with Authenticated User">
+<img src="Megalobiz_Guest.gif" title="Video Preview with Guest" alt="Video Preview with Guest">
+<img src="Megalobiz_AuthUser.gif" title="Video Preview with Authenticated User" alt="Video Preview with Authenticated User">
 
 Gif Animation created with [LiceCap](http://www.cockos.com/licecap/).
 
