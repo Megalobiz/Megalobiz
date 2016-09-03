@@ -20,6 +20,7 @@ import com.megalobiz.megalobiz.MegalobizApplication;
 import com.megalobiz.megalobiz.MegalobizClient;
 import com.megalobiz.megalobiz.R;
 import com.megalobiz.megalobiz.activities.helpers.Auth;
+import com.megalobiz.megalobiz.activities.helpers.GlobalAnimation;
 import com.megalobiz.megalobiz.activities.helpers.SharedHamburger;
 import com.megalobiz.megalobiz.activities.helpers.SharedMenu;
 import com.megalobiz.megalobiz.fragments.ShowbizMembersFragment;
@@ -109,7 +110,11 @@ public class ShowbizProfileActivity extends AppCompatActivity {
         NetworkState nt = new NetworkState(this);
         nt.closeIfNoConnection();
 
-        fetchShowbiz(showbiz.getId(), showbiz.getShowbizType());
+        try {
+            fetchShowbiz(showbiz.getId(), showbiz.getShowbizType());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -326,7 +331,7 @@ public class ShowbizProfileActivity extends AppCompatActivity {
 
         TextView tvName = (TextView) findViewById(R.id.tvName);
         TextView tvGenre = (TextView) findViewById(R.id.tvGenre);
-        TextView tvOwner = (TextView) findViewById(R.id.tvOwner);
+        final TextView tvOwner = (TextView) findViewById(R.id.tvOwner);
         TextView tvLabelOwner = (TextView) findViewById(R.id.tvLabelOwner);
         TextView tvSongsCount = (TextView) findViewById(R.id.tvSongsCount);
         TextView tvLabelSongs = (TextView) findViewById(R.id.tvLabelSongs);
@@ -374,6 +379,7 @@ public class ShowbizProfileActivity extends AppCompatActivity {
             tvOwner.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View view) {
+                    GlobalAnimation.animateTextView(tvOwner);
                     launchShowbizProfile(album.getOwner());
                 }
             });
@@ -389,7 +395,7 @@ public class ShowbizProfileActivity extends AppCompatActivity {
 
         TextView tvName = (TextView) findViewById(R.id.tvName);
         TextView tvGenre = (TextView) findViewById(R.id.tvGenre);
-        TextView tvOwner = (TextView) findViewById(R.id.tvOwner);
+        final TextView tvOwner = (TextView) findViewById(R.id.tvOwner);
         TextView tvLabelOwner = (TextView) findViewById(R.id.tvLabelOwner);
         TextView tvRespectsCount = (TextView) findViewById(R.id.tvRespectsCount);
         TextView tvYear = (TextView) findViewById(R.id.tvYear);
@@ -449,6 +455,7 @@ public class ShowbizProfileActivity extends AppCompatActivity {
             tvOwner.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View view) {
+                    GlobalAnimation.animateTextView(tvOwner);
                     launchShowbizProfile(song.getOwner());
                 }
             });
@@ -462,44 +469,64 @@ public class ShowbizProfileActivity extends AppCompatActivity {
     }
 
     public void setupMusicianMembers(ArrayList<Musician> musicians, String title) {
-        // setup showbiz member Fragment
-        ArrayList<Showbiz> mShowbizs = new ArrayList<>();
-        mShowbizs.addAll(musicians);
+        try {
+            // setup showbiz member Fragment
+            ArrayList<Showbiz> mShowbizs = new ArrayList<>();
+            mShowbizs.addAll(musicians);
 
-        ShowbizMembersFragment fgMusician = ShowbizMembersFragment.newInstance(mShowbizs, "Musician", false);
-        if(title != null) {
-            fgMusician.setTitle(title);
+            ShowbizMembersFragment fgMusician = ShowbizMembersFragment.newInstance(mShowbizs, "Musician", false);
+            if (title != null) {
+                fgMusician.setTitle(title);
+            }
+            FragmentTransaction ftMusician = getSupportFragmentManager().beginTransaction();
+            ftMusician.replace(R.id.flMusicians, fgMusician);
+            ftMusician.commit();
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        FragmentTransaction ftMusician = getSupportFragmentManager().beginTransaction();
-        ftMusician.replace(R.id.flMusicians, fgMusician);
-        ftMusician.commit();
     }
 
     public void setupAlbumMembers(ArrayList<Album> albums) {
-        // setup showbiz member Fragment
-        ArrayList<Showbiz> aShowbizs = new ArrayList<>();
-        aShowbizs.addAll(albums);
+        try {
+            // setup showbiz member Fragment
+            ArrayList<Showbiz> aShowbizs = new ArrayList<>();
+            aShowbizs.addAll(albums);
 
-        ShowbizMembersFragment fgAlbum = ShowbizMembersFragment.newInstance(aShowbizs, "Album", false);
-        FragmentTransaction ftAlbum = getSupportFragmentManager().beginTransaction();
-        ftAlbum.replace(R.id.flAlbums, fgAlbum);
-        ftAlbum.commit();
+            ShowbizMembersFragment fgAlbum = ShowbizMembersFragment.newInstance(aShowbizs, "Album", false);
+            FragmentTransaction ftAlbum = getSupportFragmentManager().beginTransaction();
+            ftAlbum.replace(R.id.flAlbums, fgAlbum);
+            ftAlbum.commit();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void setupSongMembers(ArrayList<Song> songs, String title) {
-        // setup songs Fragment
-        SongsFragment fgSong = SongsFragment.newInstance(songs, true, title);
-        FragmentTransaction ftSong = getSupportFragmentManager().beginTransaction();
-        ftSong.replace(R.id.flSongs, fgSong);
-        ftSong.commit();
+        try {
+            // setup songs Fragment
+            SongsFragment fgSong = SongsFragment.newInstance(songs, true, title);
+            FragmentTransaction ftSong = getSupportFragmentManager().beginTransaction();
+            ftSong.replace(R.id.flSongs, fgSong);
+            ftSong.commit();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void setupFeaturingSongMembers(ArrayList<Song> songs, String title) {
-        // setup songs Fragment
-        SongsFragment fgSong = SongsFragment.newInstance(songs, true, title);
-        FragmentTransaction ftSong = getSupportFragmentManager().beginTransaction();
-        ftSong.replace(R.id.flFeaturingSongs, fgSong);
-        ftSong.commit();
+        try {
+            // setup songs Fragment
+            SongsFragment fgSong = SongsFragment.newInstance(songs, true, title);
+            FragmentTransaction ftSong = getSupportFragmentManager().beginTransaction();
+            ftSong.replace(R.id.flFeaturingSongs, fgSong);
+            ftSong.commit();
+
+        }  catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void launchShowbizProfile(Showbiz showbiz) {

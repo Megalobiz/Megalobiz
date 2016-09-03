@@ -63,6 +63,7 @@ public class SharedHamburger {
         lvHamburger.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                GlobalAnimation.animateViewAlphaSize(view);
                 goToActivity(position);
             }
         });

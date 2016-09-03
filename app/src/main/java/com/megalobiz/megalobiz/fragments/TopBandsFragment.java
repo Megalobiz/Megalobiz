@@ -22,6 +22,7 @@ import com.megalobiz.megalobiz.MegalobizApplication;
 import com.megalobiz.megalobiz.MegalobizClient;
 import com.megalobiz.megalobiz.R;
 import com.megalobiz.megalobiz.activities.TopShowbizActivity;
+import com.megalobiz.megalobiz.activities.helpers.GlobalAnimation;
 import com.megalobiz.megalobiz.adapters.ShowbizArrayAdapter;
 import com.megalobiz.megalobiz.models.Band;
 import com.megalobiz.megalobiz.models.Showbiz;
@@ -47,6 +48,7 @@ public class TopBandsFragment extends Fragment {
     protected int circlePosition = 1;
     protected Animation.AnimationListener mAnimationListener;
     protected View parentView;
+    protected ArrayList<TextView> tvTops;
 
     // inflation logic
     @Override
@@ -72,6 +74,7 @@ public class TopBandsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         parentView = view;
+        setupCircles();
         setupViewFlipper();
     }
 
@@ -135,7 +138,7 @@ public class TopBandsFragment extends Fragment {
     public View createTopBandView(final Band band) {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         View v = inflater.inflate(R.layout.top_band, null);
-        TextView tvTopBandName = (TextView) v.findViewById(R.id.tvTopBandName);
+        final TextView tvTopBandName = (TextView) v.findViewById(R.id.tvTopBandName);
         ImageView imageView = (ImageView) v.findViewById(R.id.ivTopBandPicture);
         imageView.setBackgroundResource(0);
 
@@ -149,6 +152,7 @@ public class TopBandsFragment extends Fragment {
         tvTopBandName.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
+                GlobalAnimation.animateTextViewAlphaColor(tvTopBandName, Color.parseColor("#158EC6"));
                 TopShowbizActivity activity = (TopShowbizActivity) getActivity();
                 activity.launchShowbizProfile(band);
             }
@@ -157,7 +161,7 @@ public class TopBandsFragment extends Fragment {
         return v;
     }
 
-    protected void moveCirclePosition() {
+    private void setupCircles() {
         // find circle text views
         TextView tvTop1 = (TextView) parentView.findViewById(R.id.tvTop1);
         TextView tvTop2 = (TextView) parentView.findViewById(R.id.tvTop2);
@@ -166,14 +170,26 @@ public class TopBandsFragment extends Fragment {
         TextView tvTop5 = (TextView) parentView.findViewById(R.id.tvTop5);
 
         // clear circles
-        ArrayList<TextView> tvTops = new ArrayList<>();
+        tvTops = new ArrayList<>();
         tvTops.add(tvTop1);
         tvTops.add(tvTop2);
         tvTops.add(tvTop3);
         tvTops.add(tvTop4);
         tvTops.add(tvTop5);
 
-        for (TextView tvTop : tvTops) {
+        for (final TextView tvTop : tvTops) {
+            tvTop.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    GlobalAnimation.animateViewAlphaSize(tvTop);
+                    mViewFlipper.setDisplayedChild(tvTops.indexOf(tvTop));
+                }
+            });
+        }
+    }
+
+    protected void moveCirclePosition() {
+        for (final TextView tvTop : tvTops) {
             tvTop.setBackgroundResource(R.drawable.circle_empty);
             tvTop.setTextColor(Color.parseColor("#158EC6"));
         }
@@ -181,17 +197,17 @@ public class TopBandsFragment extends Fragment {
         // highlight circle
         circlePosition = mViewFlipper.getDisplayedChild() + 1;
 
-        TextView tvHighlighted = tvTop1;
+        TextView tvHighlighted = tvTops.get(0);
         if (circlePosition == 1) {
-            tvHighlighted = tvTop1;
+            tvHighlighted = tvTops.get(0);
         } else if (circlePosition == 2) {
-            tvHighlighted = tvTop2;
+            tvHighlighted = tvTops.get(1);
         } else if (circlePosition == 3) {
-            tvHighlighted = tvTop3;
+            tvHighlighted = tvTops.get(2);
         } else if (circlePosition == 4) {
-            tvHighlighted = tvTop4;
+            tvHighlighted = tvTops.get(3);
         } else if (circlePosition == 5) {
-            tvHighlighted = tvTop5;
+            tvHighlighted = tvTops.get(4);
         }
 
         tvHighlighted.setBackgroundResource(R.drawable.circle_filled);
