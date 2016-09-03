@@ -1,6 +1,7 @@
 package com.megalobiz.megalobiz.fragments;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 
 import com.megalobiz.megalobiz.R;
 import com.megalobiz.megalobiz.activities.ShowbizProfileActivity;
+import com.megalobiz.megalobiz.activities.helpers.GlobalAnimation;
 import com.megalobiz.megalobiz.models.Album;
 import com.megalobiz.megalobiz.models.Showbiz;
 import com.squareup.picasso.Picasso;
@@ -210,8 +212,8 @@ public class ShowbizMembersFragment extends Fragment {
 
     public View createShowbizView(final Showbiz showbiz) {
         LayoutInflater inflater = LayoutInflater.from(getContext());
-        View v = inflater.inflate(R.layout.showbiz_item, null);
-        TextView tvName = (TextView) v.findViewById(R.id.tvName);
+        final View v = inflater.inflate(R.layout.showbiz_item, null);
+        final TextView tvName = (TextView) v.findViewById(R.id.tvName);
         ImageView imageView = (ImageView) v.findViewById(R.id.ivProfilePicture);
         imageView.setBackgroundResource(0);
 
@@ -228,6 +230,7 @@ public class ShowbizMembersFragment extends Fragment {
         v.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
+                GlobalAnimation.animateViewAlphaSize(v);
                 launchShowbizProfile(showbiz);
             }
         });
@@ -237,7 +240,7 @@ public class ShowbizMembersFragment extends Fragment {
 
     public View createTopMusicianView(final Showbiz showbiz, int position) {
         LayoutInflater inflater = LayoutInflater.from(getContext());
-        View v = inflater.inflate(R.layout.top_musician, null);
+        final View v = inflater.inflate(R.layout.top_musician, null);
         TextView tvName = (TextView) v.findViewById(R.id.tvName);
         TextView tvMusicianPosition = (TextView) v.findViewById(R.id.tvMusicianPosition);
 
@@ -258,6 +261,7 @@ public class ShowbizMembersFragment extends Fragment {
         v.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
+                GlobalAnimation.animateViewAlphaSize(v);
                 launchShowbizProfile(showbiz);
             }
         });
@@ -271,11 +275,11 @@ public class ShowbizMembersFragment extends Fragment {
 
         LayoutInflater inflater = LayoutInflater.from(getContext());
         View v = inflater.inflate(R.layout.top_album, null);
-        TextView tvName = (TextView) v.findViewById(R.id.tvName);
+        final TextView tvName = (TextView) v.findViewById(R.id.tvName);
         TextView tvMusicianPosition = (TextView) v.findViewById(R.id.tvPosition);
-        TextView tvOwner = (TextView) v.findViewById(R.id.tvAlbumsCount);
+        final TextView tvOwner = (TextView) v.findViewById(R.id.tvAlbumsCount);
 
-        ImageView imageView = (ImageView) v.findViewById(R.id.ivProfilePicture);
+        final ImageView imageView = (ImageView) v.findViewById(R.id.ivProfilePicture);
         imageView.setBackgroundResource(0);
 
         tvName.setText(album.getName());
@@ -299,6 +303,7 @@ public class ShowbizMembersFragment extends Fragment {
         imageView.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
+                GlobalAnimation.animateViewAlphaSize(imageView);
                 launchShowbizProfile(showbiz);
             }
         });
@@ -306,6 +311,7 @@ public class ShowbizMembersFragment extends Fragment {
         tvName.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
+                GlobalAnimation.animateTextViewAlphaColor(tvName, Color.parseColor("#158EC6"));
                 launchShowbizProfile(showbiz);
             }
         });
@@ -314,6 +320,7 @@ public class ShowbizMembersFragment extends Fragment {
         tvOwner.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
+                GlobalAnimation.animateTextViewAlphaColor(tvOwner, Color.parseColor("#158EC6"));
                 launchShowbizProfile(album.getOwner());
             }
         });

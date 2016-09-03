@@ -101,6 +101,7 @@ public class SongPlayer {
         play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                GlobalAnimation.animateViewAlphaSize(play);
                 playSong();
             }
         });
@@ -108,6 +109,7 @@ public class SongPlayer {
         stop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                GlobalAnimation.animateViewAlphaSize(stop);
                 stopSong();
             }
         });
@@ -115,6 +117,7 @@ public class SongPlayer {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                GlobalAnimation.animateViewAlphaSize(next);
                 nextSong();
             }
         });
@@ -122,6 +125,7 @@ public class SongPlayer {
         previous.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                GlobalAnimation.animateViewAlphaSize(previous);
                 previousSong();
             }
         });
@@ -192,20 +196,24 @@ public class SongPlayer {
     }
 
     public void selectSong(int index) {
-        loadedSong = songs.get(index);
-        tvCurrentSong.setText(String.format("Song : %s", loadedSong.getName()));
+        if(index < songs.size()) {
+            loadedSong = songs.get(index);
+            tvCurrentSong.setText(String.format("Song : %s", loadedSong.getName()));
 
-        // clear all colors and set megalobiz blue to current playing song text view
-        if (tvSongNames.size() > 0) {
-            clearTitleColors();
+            // clear all colors and set megalobiz blue to current playing song text view
+            if (tvSongNames.size() > 0) {
+                clearTitleColors();
 
-            // set blue color to selected song
-            TextView tvName = tvSongNames.get(index);
-            tvName.setTextColor(Color.parseColor("#158EC6"));
+                // set blue color to selected song
+                TextView tvName = tvSongNames.get(index);
+                tvName.setTextColor(Color.parseColor("#158EC6"));
+                //animate text
+                GlobalAnimation.animateTextView(tvName);
+            }
+
+            displayTime(tvProgressTime, (long) startTime);
+            displayTime(tvTotalTime, (long) finalTime);
         }
-
-        displayTime(tvProgressTime, (long) startTime);
-        displayTime(tvTotalTime, (long) finalTime);
     }
 
     public void loadSong() {
@@ -297,7 +305,7 @@ public class SongPlayer {
     public void nextSong() {
         int curIndex = songs.indexOf(loadedSong);
 
-        if(curIndex < songs.size()) {
+        if(curIndex < songs.size() + 1) {
             initializeSongPlayer();
             // load song
             selectSong(curIndex + 1);

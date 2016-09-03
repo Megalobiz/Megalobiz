@@ -83,12 +83,17 @@ public class TopShowbizActivity extends AppCompatActivity {
         // check Network and Internet before proceeding
         NetworkState nt = new NetworkState(this);
         if (nt.isNetworkAvailable() && NetworkState.isOnline()) {
-            // start
-            fetchTopShowbiz();
 
-            // if grant type is Authorization Code, fetch Authenticated User
-            if (MegalobizApplication.grantType == MegalobizApplication.OAuthGrantType.AUTHORIZATION) {
-                fetchAuthUser();
+            try {
+                // start
+                fetchTopShowbiz();
+
+                // if grant type is Authorization Code, fetch Authenticated User
+                if (MegalobizApplication.grantType == MegalobizApplication.OAuthGrantType.AUTHORIZATION) {
+                    fetchAuthUser();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
 
         } else {
@@ -175,39 +180,45 @@ public class TopShowbizActivity extends AppCompatActivity {
     }
 
     public void setupTopViews() {
-        // TOP 5 Bands -------
-        //setup View Flipper for sliding bands with Fragment
-        TopBandsFragment fgBand = TopBandsFragment.newInstance(bands);
-        FragmentTransaction ftBand = getSupportFragmentManager().beginTransaction();
-        ftBand.replace(R.id.flTopBands, fgBand);
-        ftBand.commit();
 
-        // TOP 5 Musicians -----
-        // setup showbiz member Fragment
-        ArrayList<Showbiz> mShowbizs = new ArrayList<>();
-        mShowbizs.addAll(musicians);
+        try {
+            // TOP 5 Bands -------
+            //setup View Flipper for sliding bands with Fragment
+            TopBandsFragment fgBand = TopBandsFragment.newInstance(bands);
+            FragmentTransaction ftBand = getSupportFragmentManager().beginTransaction();
+            ftBand.replace(R.id.flTopBands, fgBand);
+            ftBand.commit();
 
-        ShowbizMembersFragment fgMusician = ShowbizMembersFragment.newInstance(mShowbizs, "Musician", true);
-        FragmentTransaction ftMusician = getSupportFragmentManager().beginTransaction();
-        ftMusician.replace(R.id.flTopMusicians, fgMusician);
-        ftMusician.commit();
+            // TOP 5 Musicians -----
+            // setup showbiz member Fragment
+            ArrayList<Showbiz> mShowbizs = new ArrayList<>();
+            mShowbizs.addAll(musicians);
 
-        // TOP 5 Albums -----
-        // setup showbiz member Fragment
-        ArrayList<Showbiz> aShowbizs = new ArrayList<>();
-        aShowbizs.addAll(albums);
+            ShowbizMembersFragment fgMusician = ShowbizMembersFragment.newInstance(mShowbizs, "Musician", true);
+            FragmentTransaction ftMusician = getSupportFragmentManager().beginTransaction();
+            ftMusician.replace(R.id.flTopMusicians, fgMusician);
+            ftMusician.commit();
 
-        ShowbizMembersFragment fgAlbum = ShowbizMembersFragment.newInstance(aShowbizs, "Album", true);
-        FragmentTransaction ftAlbum = getSupportFragmentManager().beginTransaction();
-        ftAlbum.replace(R.id.flTopAlbums, fgAlbum);
-        ftAlbum.commit();
+            // TOP 5 Albums -----
+            // setup showbiz member Fragment
+            ArrayList<Showbiz> aShowbizs = new ArrayList<>();
+            aShowbizs.addAll(albums);
 
-        // TOP 5 Songs ------
-        // setup songs Fragment
-        SongsFragment fgSong = SongsFragment.newInstance(songs, true, "Top Songs");
-        FragmentTransaction ftSong = getSupportFragmentManager().beginTransaction();
-        ftSong.replace(R.id.flTopSongs, fgSong);
-        ftSong.commit();
+            ShowbizMembersFragment fgAlbum = ShowbizMembersFragment.newInstance(aShowbizs, "Album", true);
+            FragmentTransaction ftAlbum = getSupportFragmentManager().beginTransaction();
+            ftAlbum.replace(R.id.flTopAlbums, fgAlbum);
+            ftAlbum.commit();
+
+            // TOP 5 Songs ------
+            // setup songs Fragment
+            SongsFragment fgSong = SongsFragment.newInstance(songs, true, "Top Songs");
+            FragmentTransaction ftSong = getSupportFragmentManager().beginTransaction();
+            ftSong.replace(R.id.flTopSongs, fgSong);
+            ftSong.commit();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 

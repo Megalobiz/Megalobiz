@@ -18,6 +18,7 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import com.megalobiz.megalobiz.MegalobizApplication;
 import com.megalobiz.megalobiz.MegalobizClient;
 import com.megalobiz.megalobiz.R;
+import com.megalobiz.megalobiz.activities.helpers.GlobalAnimation;
 import com.megalobiz.megalobiz.activities.helpers.SharedHamburger;
 import com.megalobiz.megalobiz.activities.helpers.SharedMenu;
 import com.megalobiz.megalobiz.adapters.ShowbizArrayAdapter;
@@ -72,7 +73,12 @@ public class SearchActivity extends AppCompatActivity {
         NetworkState nt = new NetworkState(this);
         nt.closeIfNoConnection();
 
-        setupGridView();
+        try {
+            setupGridView();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -143,7 +149,7 @@ public class SearchActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 // get article object at position i
                 Showbiz showbiz = (Showbiz) adapterView.getItemAtPosition(position);
-
+                GlobalAnimation.animateViewAlphaSize(view);
                 displayShowbiz(showbiz);
             }
         });
