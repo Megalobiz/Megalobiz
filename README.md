@@ -6,31 +6,31 @@ Native android app of the [Megalobiz](https://www.megalobiz.com) website , which
 Here’s a complete list of User Stories on which we will be focused:
 ## A- Required User Stories
 
-* [ ] If not yet registered, user will be proposed to create an account
-* [ ] User can login and get authenticated
+* [x] If not yet registered, user will be proposed to create an account
+* [x] User can login and get authenticated
 
 ### Any User can:
-* [ ] See Home page with top 5 of the following: Bands, Musicians, Albums, and Songs
-* [ ] See a list of Bands
-* [ ] The full band page is displayed when user clicks on a band
-* [ ] Band page may have related musicians, albums and songs when possible
-* [ ] See a list of Musicians
-* [ ] The full musician page is displayed when user clicks on a musician
-* [ ] Musician page may have related albums and songs when possible
-* [ ] See a list of Albums
-* [ ] The full album page is displayed when user clicks on an album
-* [ ] Album page must have related songs, which are the tracks
-* [ ] Songs can be played directly in the list with a music player
-* [ ] See a list of Songs
-* [ ] The full song page is displayed when user clicks on a song
-* [ ] User can play the song in the song page
-* [ ] The song may have list of other musicians that collaborate as Featuring
-* [ ] User can search for all 4 entities (band, musician, album, song)
+* [x] See Home page with top 5 of the following: Bands, Musicians, Albums, and Songs
+* [x] See a list of Bands
+* [x] The full band page is displayed when user clicks on a band
+* [x] Band page may have related musicians, albums and songs when possible
+* [x] See a list of Musicians
+* [x] The full musician page is displayed when user clicks on a musician
+* [x] Musician page may have related albums and songs when possible
+* [x] See a list of Albums
+* [x] The full album page is displayed when user clicks on an album
+* [x] Album page must have related songs, which are the tracks
+* [x] Songs can be played directly in the list with a music player
+* [x] See a list of Songs
+* [x] The full song page is displayed when user clicks on a song
+* [x] User can play the song in the song page
+* [x] The song may have list of other musicians that collaborate as Featuring
+* [x] User can search for all 4 entities (band, musician, album, song)
 
 ### Only Registered User can:
 * [ ] User can comment on albums and on songs
-* [ ] User can Respect (same as Like) all 4 Entities
-* [ ] User can Rate Songs
+* [x] User can Respect (same as Like) all 4 Entities
+* [x] User can Rate Songs
 * [ ] User can receive notifications about reply on his comments
 
 ## B- Optional User Stories
@@ -51,3 +51,33 @@ Here's the WireFrame of implemented user stories:
 Please click to see [WireFrame](http://htmlpreview.github.io/?https://github.com/Megalobiz/Megalobiz/blob/master/WireFrame/index.html) 
 
 WireFrame created with [Pencil](http://pencil.evolus.vn).
+
+## 2 Video previews of the App
+
+### 1 Preview with GUEST and 1 Preview with Authenticated User:
+
+<img src="https://github.com/Megalobiz/Megalobiz/blob/master/Megalobiz_Guest.gif" title="Video Preview with Guest" alt="Video Preview with Guest">
+
+<img src="https://github.com/Megalobiz/Megalobiz/blob/master/Megalobiz_AuthUser.gif" title="Video Preview with Authenticated User" alt="Video Preview with Authenticated User">
+
+Gif Animation created with [LiceCap](http://www.cockos.com/licecap/).
+
+## Open-source libraries used
+
+- [Android Async HTTP](https://github.com/loopj/android-async-http) - Simple asynchronous HTTP requests with JSON parsing
+- [Picasso](http://square.github.io/picasso/) - Image loading and caching library for Android
+- CodePath Android-Auth-Handler
+- ActiveAndroid SNAPSHOT
+- Picasso Transformation
+- Android Image GPU Filters
+- Nine Old Androids
+
+## License
+
+    Copyright [2016] [Megalobiz]
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
